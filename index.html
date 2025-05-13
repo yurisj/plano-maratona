@@ -23,9 +23,6 @@
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
             width: 90%;
             max-width: 700px;
-            margin-bottom: 20px;
-        }
-        .text-center {
             text-align: center;
         }
         h1 {
@@ -43,13 +40,12 @@
             margin-bottom: 20px;
             font-size: 1.1em;
         }
-        .workout-details, .future-workout-details {
+        .workout-details {
             text-align: left;
             padding: 15px;
             border: 1px solid #ddd;
             border-radius: 5px;
             background-color: #f9f9f9;
-            margin-top: 10px;
         }
         .workout-title {
             font-weight: bold;
@@ -96,45 +92,10 @@
         .rest-day {
             color: #17a2b8 !important;
         }
-        .future-workout-section {
-            margin-top: 30px;
-            border-top: 2px solid #007bff;
-            padding-top: 20px;
-        }
-        .future-workout-section label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        /* Ajuste para input[type="date"] */
-        .future-workout-section input[type="date"] {
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            margin-right: 10px;
-            width: calc(60% - 22px); /* Pode precisar de ajuste fino */
-            box-sizing: border-box; /* Garante que padding não aumente a largura total */
-        }
-        .future-workout-section button {
-            padding: 9px 15px; /* Ajuste leve para alinhar melhor com input date */
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            vertical-align: top; /* Alinha o botão com o input date */
-        }
-        .future-workout-section button:hover {
-            background-color: #0056b3;
-        }
-        #futureWorkoutResult {
-            margin-top: 15px;
-        }
     </style>
 </head>
 <body>
-    <div class="container text-center">
+    <div class="container">
         <h1>Plano de Treino - Maratona de Buenos Aires 2025</h1>
         <p id="currentDate"></p>
 
@@ -148,58 +109,65 @@
         </div>
     </div>
 
-    <div class="container">
-        <div class="future-workout-section">
-            <h2 class="text-center">Consultar Treino Futuro</h2>
-            <label for="futureDateInput">Selecione uma data:</label>
-            <div>
-                <input type="date" id="futureDateInput">
-                <button id="searchWorkoutButton">Buscar Treino</button>
-            </div>
-            <div id="futureWorkoutResult">
-                <!-- O resultado da busca será exibido aqui -->
-            </div>
-        </div>
-    </div>
-
     <script>
-        // Função para formatar a data como YYYY-MM-DD para comparação interna
-        function getFormattedDateYYYYMMDD(date) {
+        // Função para formatar a data como YYYY-MM-DD para comparação
+        function getFormattedDate(date) {
             let year = date.getFullYear();
             let month = (date.getMonth() + 1).toString().padStart(2, '0');
             let day = date.getDate().toString().padStart(2, '0');
             return `${year}-${month}-${day}`;
         }
 
-        // SEU PLANO DE TREINO (COPIADO E ADAPTADO DO CSV)
-        // IMPORTANTE: As datas devem estar no formato YYYY-MM-DD
-        const trainingPlan = [
-            // BLOCO 1: CONSTRUÇÃO INICIAL
-            { date: "2025-05-12", week: "1", day: "Seg", workout: "Descanso ou Treino Regenerativo/Cruzado (30-40 min leve)", notes: "" },
-            { date: "2025-05-13", week: "1", day: "Ter", workout: "Aquec. + 8x 400m RI (4:05-4:15) c/ 400m trote rec. + Desaq.", notes: "" },
-            { date: "2025-05-14", week: "1", day: "Qua", workout: "8km RL", notes: "+ Fortalecimento" },
-            { date: "2025-05-15", week: "1", day: "Qui", workout: "10km RL", notes: "" },
-            { date: "2025-05-16", week: "1", day: "Sex", workout: "Descanso / RL Leve (4-6km)", notes: "" },
-            { date: "2025-05-17", week: "1", day: "Sáb", workout: "6km RL", notes: "" },
-            { date: "2025-05-18", week: "1", day: "Dom", workout: "16km RL", notes: "Volume Aprox: ~48-50 km" },
-            { date: "2025-05-19", week: "2", day: "Seg", workout: "Descanso ou Treino Regenerativo/Cruzado", notes: "" },
-            { date: "2025-05-20", week: "2", day: "Ter", workout: "Aquec. + 6x 800m RI (4:10-4:20) c/ 400m trote rec. + Desaq.", notes: "" },
-            { date: "2025-05-21", week: "2", day: "Qua", workout: "8km RL", notes: "+ Fortalecimento" },
-            { date: "2025-05-22", week: "2", day: "Qui", workout: "10km com 4km RC (4:30-4:40) no meio", notes: "" },
-            // ... (RESTANTE DO SEU PLANO DE TREINO - MANTENHA ELE COMPLETO AQUI)
-            { date: "2025-09-15", week: "19", day: "Seg", workout: "**DESCANSO TOTAL**", notes: "(SEMANA DA PROVA!)" },
-            { date: "2025-09-16", week: "19", day: "Ter", workout: "5km RL + 4x100m Strides", notes: "Leve, soltar as pernas" },
-            { date: "2025-09-17", week: "19", day: "Qua", workout: "Descanso ou 3-4km RL muito leve", notes: "" },
-            { date: "2025-09-18", week: "19", day: "Qui", workout: "Viagem / Descanso", notes: "" },
-            { date: "2025-09-19", week: "19", day: "Sex", workout: "2-3km RL muito leve + 2x100m Strides", notes: "Soltar as pernas no local" },
-            { date: "2025-09-20", week: "19", day: "Sáb", workout: "**DESCANSO TOTAL**", notes: "Preparar tudo. Mentalizar." },
-            { date: "2025-09-21", week: "19", day: "Dom", workout: "**MARATONA DE BUENOS AIRES!**", notes: "**BOA PROVA!**" }
-        ];
+        // Função para carregar o plano de treino do arquivo JSON
+        async function loadTrainingPlan() {
+            try {
+                const response = await fetch('training_plan.json'); // Nome do seu arquivo JSON
+                if (!response.ok) {
+                    throw new Error(`Erro ao carregar o plano: ${response.status} ${response.statusText}`);
+                }
+                const planData = await response.json();
+                return planData;
+            } catch (error) {
+                console.error("Falha ao carregar ou parsear o plano de treino:", error);
+                displayErrorMessage("Não foi possível carregar o plano de treino. Verifique o arquivo 'training_plan.json' e o console do navegador para mais detalhes.");
+                return null; // Retorna null para indicar falha
+            }
+        }
+
+        function displayErrorMessage(message) {
+            const workoutElement = document.getElementById('workoutDescription');
+            const notesElement = document.getElementById('workoutNotes');
+            const weekElement = document.getElementById('weekNumber');
+            const dayOfWeekElement = document.getElementById('dayOfWeek');
+            const generalMessageElement = document.getElementById('generalMessage');
+            const workoutDetailsDiv = document.querySelector('.workout-details');
+
+            workoutDetailsDiv.style.display = 'block'; // Garante que a área de detalhes esteja visível
+            weekElement.textContent = '-';
+            dayOfWeekElement.textContent = '-';
+            workoutElement.textContent = 'Erro';
+            workoutElement.style.color = 'red';
+            notesElement.textContent = '';
+            generalMessageElement.textContent = message;
+            generalMessageElement.className = 'message error-message';
+        }
+
 
         // Função principal para exibir o treino do dia
-        function displayTodaysWorkout() {
+        async function displayTodaysWorkout() {
+            const trainingPlan = await loadTrainingPlan();
+
+            if (!trainingPlan) { // Se o carregamento falhou, a mensagem de erro já foi exibida
+                return;
+            }
+
             const today = new Date();
-            const formattedToday = getFormattedDateYYYYMMDD(today);
+            // Para testar outras datas (descomente e ajuste):
+            // const today = new Date("2025-09-21T10:00:00Z"); // Dia da Maratona
+            // const today = new Date("2025-05-10T10:00:00Z"); // Antes do plano
+            // const today = new Date("2025-10-01T10:00:00Z"); // Depois do plano
+
+            const formattedToday = getFormattedDate(today);
             document.getElementById('currentDate').textContent = `Hoje é: ${today.toLocaleDateString('pt-BR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`;
 
             const workoutElement = document.getElementById('workoutDescription');
@@ -209,9 +177,9 @@
             const generalMessageElement = document.getElementById('generalMessage');
             const workoutDetailsDiv = document.querySelector('.workout-details');
 
-            generalMessageElement.textContent = '';
-            generalMessageElement.className = 'message';
-            workoutDetailsDiv.style.display = 'none';
+            generalMessageElement.textContent = ''; // Limpa mensagens antigas
+            generalMessageElement.className = 'message'; // Reseta classes de mensagem
+            workoutDetailsDiv.style.display = 'none'; // Esconde detalhes por padrão
 
             const todaysEntry = trainingPlan.find(entry => entry.date === formattedToday);
 
@@ -220,9 +188,9 @@
                 weekElement.textContent = todaysEntry.week;
                 dayOfWeekElement.textContent = todaysEntry.day;
                 workoutElement.textContent = todaysEntry.workout;
-                notesElement.textContent = todaysEntry.notes || '';
+                notesElement.textContent = todaysEntry.notes || ''; // Mostra notas se existirem
 
-                workoutElement.className = 'workout-title';
+                workoutElement.className = 'workout-title'; // Reseta classes
                 if (todaysEntry.workout.includes("MARATONA DE BUENOS AIRES")) {
                     workoutElement.classList.add('race-day');
                     generalMessageElement.textContent = "É HOJE! BOA PROVA!";
@@ -230,88 +198,34 @@
                 } else if (todaysEntry.workout.toLowerCase().includes("descanso")) {
                      workoutElement.classList.add('rest-day');
                 }
-            } else {
-                const firstPlanDate = new Date(trainingPlan[0].date + "T00:00:00");
-                const lastPlanDate = new Date(trainingPlan[trainingPlan.length - 1].date + "T00:00:00");
 
-                if (today < firstPlanDate) {
+            } else {
+                // Verifica se está antes ou depois do plano
+                // Adiciona T00:00:00 para evitar problemas de fuso horário na comparação de datas
+                const firstPlanDate = trainingPlan.length > 0 ? new Date(trainingPlan[0].date + "T00:00:00") : null;
+                const lastPlanDate = trainingPlan.length > 0 ? new Date(trainingPlan[trainingPlan.length - 1].date + "T00:00:00") : null;
+
+                workoutDetailsDiv.style.display = 'block'; // Mostra a div mesmo para mensagens gerais
+                weekElement.textContent = '-';
+                dayOfWeekElement.textContent = '-';
+                workoutElement.textContent = 'Nenhum treino agendado para hoje.';
+                notesElement.textContent = '';
+
+
+                if (firstPlanDate && today < firstPlanDate) {
                     generalMessageElement.textContent = `Seu plano de treino começa em ${firstPlanDate.toLocaleDateString('pt-BR')}! Prepare-se!`;
                     generalMessageElement.classList.add('info-message');
-                } else if (today > lastPlanDate) {
+                } else if (lastPlanDate && today > lastPlanDate) {
                     generalMessageElement.textContent = "Parabéns! Você concluiu seu plano de treino para a Maratona!";
                     generalMessageElement.classList.add('success-message');
                 } else {
                     generalMessageElement.textContent = "Nenhum treino específico agendado para hoje. Consulte o plano geral ou aproveite o descanso!";
                     generalMessageElement.classList.add('warning-message');
                 }
-                weekElement.textContent = '-';
-                dayOfWeekElement.textContent = '-';
-                workoutElement.textContent = 'Nenhum treino agendado.';
-                notesElement.textContent = '';
             }
         }
 
-        // Função para buscar e exibir treino de data futura
-        function displayFutureWorkout() {
-            // O valor do input type="date" já vem no formato YYYY-MM-DD
-            const formattedDateToSearch = document.getElementById('futureDateInput').value;
-            const resultDiv = document.getElementById('futureWorkoutResult');
-            resultDiv.innerHTML = ''; // Limpa resultados anteriores
-
-            if (!formattedDateToSearch) {
-                resultDiv.innerHTML = `<p class="message error-message">Por favor, selecione uma data.</p>`;
-                return;
-            }
-            
-            // Para exibição, convertemos a string YYYY-MM-DD para um objeto Date
-            // Adicionamos "T00:00:00" para evitar problemas com fuso horário na criação do objeto Date a partir de uma string
-            const dateParts = formattedDateToSearch.split('-');
-            const year = parseInt(dateParts[0]);
-            const month = parseInt(dateParts[1]) - 1; // Mês é 0-indexado no objeto Date
-            const day = parseInt(dateParts[2]);
-            
-            const dateObjForDisplay = new Date(year, month, day);
-            const displayDate = dateObjForDisplay.toLocaleDateString('pt-BR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-
-            const futureEntry = trainingPlan.find(entry => entry.date === formattedDateToSearch);
-
-            if (futureEntry) {
-                let workoutClass = 'workout-title';
-                if (futureEntry.workout.includes("MARATONA DE BUENOS AIRES")) {
-                    workoutClass += ' race-day';
-                } else if (futureEntry.workout.toLowerCase().includes("descanso")) {
-                    workoutClass += ' rest-day';
-                }
-
-                resultDiv.innerHTML = `
-                    <div class="future-workout-details">
-                        <p><strong>Treino para ${displayDate}:</strong></p>
-                        <p><strong>Semana:</strong> ${futureEntry.week} | <strong>Dia:</strong> ${futureEntry.day}</p>
-                        <p class="${workoutClass}">${futureEntry.workout}</p>
-                        ${futureEntry.notes ? `<p class="workout-notes">${futureEntry.notes}</p>` : ''}
-                    </div>
-                `;
-            } else {
-                 const firstPlanDate = new Date(trainingPlan[0].date + "T00:00:00Z"); // Usar Z para UTC
-                 const lastPlanDate = new Date(trainingPlan[trainingPlan.length - 1].date + "T00:00:00Z"); // Usar Z para UTC
-                 const selectedDateObj = new Date(formattedDateToSearch + "T00:00:00Z"); // Usar Z para UTC
-
-                if (selectedDateObj < firstPlanDate) {
-                     resultDiv.innerHTML = `<p class="message info-message">O plano de treino ainda não começou em ${displayDate}. O plano inicia em ${firstPlanDate.toLocaleDateString('pt-BR', {timeZone: 'UTC'})}.</p>`;
-                } else if (selectedDateObj > lastPlanDate) {
-                     resultDiv.innerHTML = `<p class="message info-message">O plano de treino já terminou em ${displayDate}. O plano encerrou em ${lastPlanDate.toLocaleDateString('pt-BR', {timeZone: 'UTC'})}.</p>`;
-                } else {
-                    resultDiv.innerHTML = `<p class="message warning-message">Nenhum treino encontrado para ${displayDate} no plano.</p>`;
-                }
-            }
-        }
-
-        document.getElementById('searchWorkoutButton').addEventListener('click', displayFutureWorkout);
-        
-        // Não precisamos mais do listener de 'keypress' para Enter no input de data,
-        // pois o input type="date" não submete formulários dessa forma e a ação é via botão.
-        // Se quiser manter a funcionalidade do Enter, pode-se adicionar ao documento ou a um form wrapper.
-
+        // Chama a função quando a página carregar
         window.onload = displayTodaysWorkout;
     </script>
 </body>
