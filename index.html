@@ -23,7 +23,7 @@
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
             width: 90%;
             max-width: 700px;
-            margin-bottom: 20px; /* Adicionado espaço entre os containers */
+            margin-bottom: 20px;
         }
         .text-center {
             text-align: center;
@@ -83,7 +83,7 @@
             color: #856404;
             border: 1px solid #ffeeba;
         }
-        .error-message { /* Nova classe para erros */
+        .error-message {
             background-color: #f8d7da;
             color: #721c24;
             border: 1px solid #f5c6cb;
@@ -96,7 +96,6 @@
         .rest-day {
             color: #17a2b8 !important;
         }
-        /* Estilos para a nova seção */
         .future-workout-section {
             margin-top: 30px;
             border-top: 2px solid #007bff;
@@ -107,21 +106,24 @@
             margin-bottom: 5px;
             font-weight: bold;
         }
-        .future-workout-section input[type="text"] {
+        /* Ajuste para input[type="date"] */
+        .future-workout-section input[type="date"] {
             padding: 8px;
             border: 1px solid #ccc;
             border-radius: 4px;
             margin-right: 10px;
-            width: calc(60% - 22px); /* Ajustado para caber o botão */
+            width: calc(60% - 22px); /* Pode precisar de ajuste fino */
+            box-sizing: border-box; /* Garante que padding não aumente a largura total */
         }
         .future-workout-section button {
-            padding: 8px 15px;
+            padding: 9px 15px; /* Ajuste leve para alinhar melhor com input date */
             background-color: #007bff;
             color: white;
             border: none;
             border-radius: 4px;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            vertical-align: top; /* Alinha o botão com o input date */
         }
         .future-workout-section button:hover {
             background-color: #0056b3;
@@ -149,9 +151,9 @@
     <div class="container">
         <div class="future-workout-section">
             <h2 class="text-center">Consultar Treino Futuro</h2>
-            <label for="futureDateInput">Digite uma data (DD/MM/AAAA):</label>
+            <label for="futureDateInput">Selecione uma data:</label>
             <div>
-                <input type="text" id="futureDateInput" placeholder="DD/MM/AAAA">
+                <input type="date" id="futureDateInput">
                 <button id="searchWorkoutButton">Buscar Treino</button>
             </div>
             <div id="futureWorkoutResult">
@@ -169,24 +171,6 @@
             return `${year}-${month}-${day}`;
         }
 
-        // Função para converter DD/MM/AAAA para YYYY-MM-DD
-        function convertDDMMYYYYtoYYYYMMDD(dateString) {
-            const parts = dateString.split('/');
-            if (parts.length === 3) {
-                const day = parts[0].padStart(2, '0');
-                const month = parts[1].padStart(2, '0');
-                const year = parts[2];
-                if (year.length === 4 && month >= 1 && month <= 12 && day >= 1 && day <= 31) {
-                     // Validação básica de data (não checa dias por mês especificamente)
-                    if (new Date(`${year}-${month}-${day}`).getDate() == parseInt(day)) { // Checa se a data é válida
-                        return `${year}-${month}-${day}`;
-                    }
-                }
-            }
-            return null; // Retorna null se o formato for inválido
-        }
-
-
         // SEU PLANO DE TREINO (COPIADO E ADAPTADO DO CSV)
         // IMPORTANTE: As datas devem estar no formato YYYY-MM-DD
         const trainingPlan = [
@@ -202,11 +186,7 @@
             { date: "2025-05-20", week: "2", day: "Ter", workout: "Aquec. + 6x 800m RI (4:10-4:20) c/ 400m trote rec. + Desaq.", notes: "" },
             { date: "2025-05-21", week: "2", day: "Qua", workout: "8km RL", notes: "+ Fortalecimento" },
             { date: "2025-05-22", week: "2", day: "Qui", workout: "10km com 4km RC (4:30-4:40) no meio", notes: "" },
-            { date: "2025-05-23", week: "2", day: "Sex", workout: "Descanso / RL Leve (4-6km)", notes: "" },
-            { date: "2025-05-24", week: "2", day: "Sáb", workout: "8km RL", notes: "" },
-            { date: "2025-05-25", week: "2", day: "Dom", workout: "18km RL", notes: "Volume Aprox: ~55 km" },
             // ... (RESTANTE DO SEU PLANO DE TREINO - MANTENHA ELE COMPLETO AQUI)
-            // Colei apenas o início para encurtar a resposta, mas você deve manter o plano completo.
             { date: "2025-09-15", week: "19", day: "Seg", workout: "**DESCANSO TOTAL**", notes: "(SEMANA DA PROVA!)" },
             { date: "2025-09-16", week: "19", day: "Ter", workout: "5km RL + 4x100m Strides", notes: "Leve, soltar as pernas" },
             { date: "2025-09-17", week: "19", day: "Qua", workout: "Descanso ou 3-4km RL muito leve", notes: "" },
@@ -219,11 +199,6 @@
         // Função principal para exibir o treino do dia
         function displayTodaysWorkout() {
             const today = new Date();
-            // Para testar outras datas (descomente e ajuste):
-            // const today = new Date("2025-09-21T10:00:00Z"); // Dia da Maratona
-            // const today = new Date("2025-05-10T10:00:00Z"); // Antes do plano
-            // const today = new Date("2025-10-01T10:00:00Z"); // Depois do plano
-
             const formattedToday = getFormattedDateYYYYMMDD(today);
             document.getElementById('currentDate').textContent = `Hoje é: ${today.toLocaleDateString('pt-BR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`;
 
@@ -234,9 +209,9 @@
             const generalMessageElement = document.getElementById('generalMessage');
             const workoutDetailsDiv = document.querySelector('.workout-details');
 
-            generalMessageElement.textContent = ''; // Limpa mensagens antigas
-            generalMessageElement.className = 'message'; // Reseta classes de mensagem
-            workoutDetailsDiv.style.display = 'none'; // Esconde detalhes por padrão
+            generalMessageElement.textContent = '';
+            generalMessageElement.className = 'message';
+            workoutDetailsDiv.style.display = 'none';
 
             const todaysEntry = trainingPlan.find(entry => entry.date === formattedToday);
 
@@ -245,9 +220,9 @@
                 weekElement.textContent = todaysEntry.week;
                 dayOfWeekElement.textContent = todaysEntry.day;
                 workoutElement.textContent = todaysEntry.workout;
-                notesElement.textContent = todaysEntry.notes || ''; 
+                notesElement.textContent = todaysEntry.notes || '';
 
-                workoutElement.className = 'workout-title'; 
+                workoutElement.className = 'workout-title';
                 if (todaysEntry.workout.includes("MARATONA DE BUENOS AIRES")) {
                     workoutElement.classList.add('race-day');
                     generalMessageElement.textContent = "É HOJE! BOA PROVA!";
@@ -255,7 +230,6 @@
                 } else if (todaysEntry.workout.toLowerCase().includes("descanso")) {
                      workoutElement.classList.add('rest-day');
                 }
-
             } else {
                 const firstPlanDate = new Date(trainingPlan[0].date + "T00:00:00");
                 const lastPlanDate = new Date(trainingPlan[trainingPlan.length - 1].date + "T00:00:00");
@@ -279,25 +253,25 @@
 
         // Função para buscar e exibir treino de data futura
         function displayFutureWorkout() {
-            const dateInput = document.getElementById('futureDateInput').value;
+            // O valor do input type="date" já vem no formato YYYY-MM-DD
+            const formattedDateToSearch = document.getElementById('futureDateInput').value;
             const resultDiv = document.getElementById('futureWorkoutResult');
             resultDiv.innerHTML = ''; // Limpa resultados anteriores
 
-            if (!dateInput) {
-                resultDiv.innerHTML = `<p class="message error-message">Por favor, insira uma data.</p>`;
-                return;
-            }
-
-            const formattedDateToSearch = convertDDMMYYYYtoYYYYMMDD(dateInput);
-
             if (!formattedDateToSearch) {
-                resultDiv.innerHTML = `<p class="message error-message">Formato de data inválido. Use DD/MM/AAAA.</p>`;
+                resultDiv.innerHTML = `<p class="message error-message">Por favor, selecione uma data.</p>`;
                 return;
             }
             
-            const dateObjForDisplay = new Date(formattedDateToSearch + "T00:00:00"); // Para exibição correta da data
+            // Para exibição, convertemos a string YYYY-MM-DD para um objeto Date
+            // Adicionamos "T00:00:00" para evitar problemas com fuso horário na criação do objeto Date a partir de uma string
+            const dateParts = formattedDateToSearch.split('-');
+            const year = parseInt(dateParts[0]);
+            const month = parseInt(dateParts[1]) - 1; // Mês é 0-indexado no objeto Date
+            const day = parseInt(dateParts[2]);
+            
+            const dateObjForDisplay = new Date(year, month, day);
             const displayDate = dateObjForDisplay.toLocaleDateString('pt-BR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-
 
             const futureEntry = trainingPlan.find(entry => entry.date === formattedDateToSearch);
 
@@ -318,32 +292,26 @@
                     </div>
                 `;
             } else {
-                 const firstPlanDate = new Date(trainingPlan[0].date + "T00:00:00");
-                 const lastPlanDate = new Date(trainingPlan[trainingPlan.length - 1].date + "T00:00:00");
+                 const firstPlanDate = new Date(trainingPlan[0].date + "T00:00:00Z"); // Usar Z para UTC
+                 const lastPlanDate = new Date(trainingPlan[trainingPlan.length - 1].date + "T00:00:00Z"); // Usar Z para UTC
+                 const selectedDateObj = new Date(formattedDateToSearch + "T00:00:00Z"); // Usar Z para UTC
 
-                if (dateObjForDisplay < firstPlanDate) {
-                     resultDiv.innerHTML = `<p class="message info-message">O plano de treino ainda não começou em ${displayDate}. O plano inicia em ${firstPlanDate.toLocaleDateString('pt-BR')}.</p>`;
-                } else if (dateObjForDisplay > lastPlanDate) {
-                     resultDiv.innerHTML = `<p class="message info-message">O plano de treino já terminou em ${displayDate}. O plano encerrou em ${lastPlanDate.toLocaleDateString('pt-BR')}.</p>`;
+                if (selectedDateObj < firstPlanDate) {
+                     resultDiv.innerHTML = `<p class="message info-message">O plano de treino ainda não começou em ${displayDate}. O plano inicia em ${firstPlanDate.toLocaleDateString('pt-BR', {timeZone: 'UTC'})}.</p>`;
+                } else if (selectedDateObj > lastPlanDate) {
+                     resultDiv.innerHTML = `<p class="message info-message">O plano de treino já terminou em ${displayDate}. O plano encerrou em ${lastPlanDate.toLocaleDateString('pt-BR', {timeZone: 'UTC'})}.</p>`;
                 } else {
                     resultDiv.innerHTML = `<p class="message warning-message">Nenhum treino encontrado para ${displayDate} no plano.</p>`;
                 }
             }
         }
 
-        // Adiciona o listener de evento para o botão de busca
         document.getElementById('searchWorkoutButton').addEventListener('click', displayFutureWorkout);
+        
+        // Não precisamos mais do listener de 'keypress' para Enter no input de data,
+        // pois o input type="date" não submete formulários dessa forma e a ação é via botão.
+        // Se quiser manter a funcionalidade do Enter, pode-se adicionar ao documento ou a um form wrapper.
 
-        // Adiciona listener para a tecla Enter no campo de data futura
-        document.getElementById('futureDateInput').addEventListener('keypress', function(event) {
-            if (event.key === 'Enter') {
-                event.preventDefault(); // Impede o comportamento padrão do Enter (que poderia ser submeter um formulário)
-                displayFutureWorkout();
-            }
-        });
-
-
-        // Chama a função para o treino do dia quando a página carregar
         window.onload = displayTodaysWorkout;
     </script>
 </body>
