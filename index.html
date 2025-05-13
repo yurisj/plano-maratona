@@ -1,3 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Plano de Treino - Maratona de Buenos Aires</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 700px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        #currentDisplayedDate {
+            font-weight: bold;
+            color: #007bff;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+        .workout-details {
+            text-align: left;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            margin-top: 15px;
+        }
+        .workout-title {
+            font-weight: bold;
+            font-size: 1.2em;
+            color: #28a745;
+        }
+        .workout-notes {
+            font-style: italic;
+            color: #666;
+            margin-top: 5px;
+            font-size: 0.9em;
+        }
+        .message {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .info-message { background-color: #e2f3ff; color: #004085; border: 1px solid #b8daff; }
+        .success-message { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .warning-message { background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
+        .error-message { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .race-day { color: #dc3545 !important; font-weight: bold; font-size: 1.3em; }
+        .rest-day { color: #17a2b8 !important; }
+
+        .search-area, .navigation-area {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+        }
+        .search-area label, .search-area input, .search-area button, .navigation-area button {
+            margin: 5px;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        .search-area input[type="date"] {
+            padding: 6px; /* Ajuste para input date */
+        }
+        .search-area button, .navigation-area button {
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            border-color: #007bff;
+        }
+        .search-area button:hover, .navigation-area button:hover {
+            background-color: #0056b3;
+        }
+        .navigation-area {
+            display: flex;
+            justify-content: space-between;
+        }
+        .current-view-label {
+            font-size: 0.9em;
+            color: #6c757d;
+            margin-bottom: 5px;
+        }
+
+    </style>
+</head>
 <body>
     <div class="container">
         <h1>Plano de Treino - Maratona de Buenos Aires 2025</h1>
@@ -14,14 +120,6 @@
         </div>
     </div>
 
-    <!-- Bloco de Navegação (Anterior, Hoje, Próximo) AGORA VEM PRIMEIRO -->
-    <div class="container navigation-area">
-        <button id="prevDayButton">« Dia Anterior</button>
-        <button id="todayButton">Ver Treino de Hoje</button>
-        <button id="nextDayButton">Próximo Dia »</button>
-    </div>
-
-    <!-- Bloco de Busca por Data AGORA VEM DEPOIS -->
     <div class="container search-area">
         <h2>Buscar Treino por Data</h2>
         <label for="searchDate">Escolha uma data:</label>
@@ -29,11 +127,17 @@
         <button id="searchButton">Buscar</button>
     </div>
 
-    <script>
-        // O restante do seu JavaScript permanece o mesmo aqui...
-        let currentTrainingPlan = null;
-        let currentlyDisplayedDate = new Date();
+    <div class="container navigation-area">
+        <button id="prevDayButton">« Dia Anterior</button>
+        <button id="todayButton">Ver Treino de Hoje</button>
+        <button id="nextDayButton">Próximo Dia »</button>
+    </div>
 
+    <script>
+        let currentTrainingPlan = null; // Variável global para armazenar o plano carregado
+        let currentlyDisplayedDate = new Date(); // Data atualmente exibida, inicia com hoje
+
+        // Função para formatar a data como YYYY-MM-DD
         function getFormattedDate(date) {
             const year = date.getFullYear();
             const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -41,9 +145,11 @@
             return `${year}-${month}-${day}`;
         }
 
+        // Função para formatar a data para exibição (dd/mm/aaaa, Dia da Semana)
         function getDisplayFormattedDate(date) {
             return date.toLocaleDateString('pt-BR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
         }
+
 
         async function loadTrainingPlan() {
             try {
@@ -51,7 +157,7 @@
                 if (!response.ok) {
                     throw new Error(`Erro ao carregar o plano: ${response.status} ${response.statusText}`);
                 }
-                currentTrainingPlan = await response.json();
+                currentTrainingPlan = await response.json(); // Armazena na variável global
                 return true;
             } catch (error) {
                 console.error("Falha ao carregar ou parsear o plano de treino:", error);
@@ -85,8 +191,10 @@
                 return;
             }
 
-            currentlyDisplayedDate = new Date(dateToDisplay);
+            currentlyDisplayedDate = new Date(dateToDisplay); // Atualiza a data atualmente exibida
+             // Garante que a hora seja zerada para evitar problemas de fuso na comparação
             currentlyDisplayedDate.setHours(0, 0, 0, 0);
+
 
             const formattedDate = getFormattedDate(currentlyDisplayedDate);
             document.getElementById('currentDisplayedDate').textContent = getDisplayFormattedDate(currentlyDisplayedDate);
@@ -140,12 +248,16 @@
                     generalMessageElement.classList.add('warning-message');
                 }
             }
+             // Atualiza o valor do input de data para a data exibida
             document.getElementById('searchDate').value = getFormattedDate(currentlyDisplayedDate);
         }
 
+        // Event Listeners
         document.getElementById('searchButton').addEventListener('click', () => {
             const dateInput = document.getElementById('searchDate').value;
             if (dateInput) {
+                // O input date retorna YYYY-MM-DD. O construtor Date precisa de um formato que
+                // não cause problemas de fuso. Adicionar 'T00:00:00' ajuda.
                 const selectedDate = new Date(dateInput + "T00:00:00");
                 displayWorkoutForDate(selectedDate);
             } else {
@@ -166,13 +278,16 @@
         });
 
         document.getElementById('todayButton').addEventListener('click', () => {
-            displayWorkoutForDate(new Date());
+            displayWorkoutForDate(new Date()); // Exibe o treino para a data atual
         });
 
+
+        // Inicialização
         async function initializeApp() {
             const planLoaded = await loadTrainingPlan();
             if (planLoaded) {
-                displayWorkoutForDate(new Date());
+                displayWorkoutForDate(new Date()); // Exibe o treino para a data atual ao carregar
+                 // Define o valor inicial do input date para a data atual
                 document.getElementById('searchDate').value = getFormattedDate(new Date());
             }
         }
@@ -180,3 +295,4 @@
         window.onload = initializeApp;
     </script>
 </body>
+</html>
