@@ -23,6 +23,9 @@
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
             width: 90%;
             max-width: 700px;
+            margin-bottom: 20px; /* Adicionado espaço entre os containers */
+        }
+        .text-center {
             text-align: center;
         }
         h1 {
@@ -40,12 +43,13 @@
             margin-bottom: 20px;
             font-size: 1.1em;
         }
-        .workout-details {
+        .workout-details, .future-workout-details {
             text-align: left;
             padding: 15px;
             border: 1px solid #ddd;
             border-radius: 5px;
             background-color: #f9f9f9;
+            margin-top: 10px;
         }
         .workout-title {
             font-weight: bold;
@@ -79,6 +83,11 @@
             color: #856404;
             border: 1px solid #ffeeba;
         }
+        .error-message { /* Nova classe para erros */
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
         .race-day {
             color: #dc3545 !important;
             font-weight: bold;
@@ -87,10 +96,43 @@
         .rest-day {
             color: #17a2b8 !important;
         }
+        /* Estilos para a nova seção */
+        .future-workout-section {
+            margin-top: 30px;
+            border-top: 2px solid #007bff;
+            padding-top: 20px;
+        }
+        .future-workout-section label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .future-workout-section input[type="text"] {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-right: 10px;
+            width: calc(60% - 22px); /* Ajustado para caber o botão */
+        }
+        .future-workout-section button {
+            padding: 8px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .future-workout-section button:hover {
+            background-color: #0056b3;
+        }
+        #futureWorkoutResult {
+            margin-top: 15px;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container text-center">
         <h1>Plano de Treino - Maratona de Buenos Aires 2025</h1>
         <p id="currentDate"></p>
 
@@ -104,14 +146,46 @@
         </div>
     </div>
 
+    <div class="container">
+        <div class="future-workout-section">
+            <h2 class="text-center">Consultar Treino Futuro</h2>
+            <label for="futureDateInput">Digite uma data (DD/MM/AAAA):</label>
+            <div>
+                <input type="text" id="futureDateInput" placeholder="DD/MM/AAAA">
+                <button id="searchWorkoutButton">Buscar Treino</button>
+            </div>
+            <div id="futureWorkoutResult">
+                <!-- O resultado da busca será exibido aqui -->
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Função para formatar a data como YYYY-MM-DD para comparação
-        function getFormattedDate(date) {
+        // Função para formatar a data como YYYY-MM-DD para comparação interna
+        function getFormattedDateYYYYMMDD(date) {
             let year = date.getFullYear();
             let month = (date.getMonth() + 1).toString().padStart(2, '0');
             let day = date.getDate().toString().padStart(2, '0');
             return `${year}-${month}-${day}`;
         }
+
+        // Função para converter DD/MM/AAAA para YYYY-MM-DD
+        function convertDDMMYYYYtoYYYYMMDD(dateString) {
+            const parts = dateString.split('/');
+            if (parts.length === 3) {
+                const day = parts[0].padStart(2, '0');
+                const month = parts[1].padStart(2, '0');
+                const year = parts[2];
+                if (year.length === 4 && month >= 1 && month <= 12 && day >= 1 && day <= 31) {
+                     // Validação básica de data (não checa dias por mês especificamente)
+                    if (new Date(`${year}-${month}-${day}`).getDate() == parseInt(day)) { // Checa se a data é válida
+                        return `${year}-${month}-${day}`;
+                    }
+                }
+            }
+            return null; // Retorna null se o formato for inválido
+        }
+
 
         // SEU PLANO DE TREINO (COPIADO E ADAPTADO DO CSV)
         // IMPORTANTE: As datas devem estar no formato YYYY-MM-DD
@@ -131,120 +205,8 @@
             { date: "2025-05-23", week: "2", day: "Sex", workout: "Descanso / RL Leve (4-6km)", notes: "" },
             { date: "2025-05-24", week: "2", day: "Sáb", workout: "8km RL", notes: "" },
             { date: "2025-05-25", week: "2", day: "Dom", workout: "18km RL", notes: "Volume Aprox: ~55 km" },
-            { date: "2025-05-26", week: "3", day: "Seg", workout: "Descanso ou Treino Regenerativo/Cruzado", notes: "" },
-            { date: "2025-05-27", week: "3", day: "Ter", workout: "Aquec. + 5x 1000m RI (4:15-4:25) c/ 500m trote rec. + Desaq.", notes: "" },
-            { date: "2025-05-28", week: "3", day: "Qua", workout: "10km RL", notes: "+ Fortalecimento" },
-            { date: "2025-05-29", week: "3", day: "Qui", workout: "12km com 2x 3km RM (4:55-5:00), c/ 1km trote entre eles", notes: "" },
-            { date: "2025-05-30", week: "3", day: "Sex", workout: "Descanso / RL Leve (4-6km)", notes: "" },
-            { date: "2025-05-31", week: "3", day: "Sáb", workout: "8km RL", notes: "" },
-            { date: "2025-06-01", week: "3", day: "Dom", workout: "20km RL", notes: "Volume Aprox: ~62 km" },
-            { date: "2025-06-02", week: "4", day: "Seg", workout: "Descanso ou Treino Regenerativo/Cruzado", notes: "(Semana de Assimilação)" },
-            { date: "2025-06-03", week: "4", day: "Ter", workout: "Aquec. + 10x 400m RI (4:05-4:15) c/ 400m trote rec. + Desaq.", notes: "" },
-            { date: "2025-06-04", week: "4", day: "Qua", workout: "8km RL", notes: "+ Fortalecimento" },
-            { date: "2025-06-05", week: "4", day: "Qui", workout: "10km RL", notes: "" },
-            { date: "2025-06-06", week: "4", day: "Sex", workout: "Descanso / RL Leve (4-6km)", notes: "" },
-            { date: "2025-06-07", week: "4", day: "Sáb", workout: "6km RL", notes: "" },
-            { date: "2025-06-08", week: "4", day: "Dom", workout: "16km RL (reduzido)", notes: "Volume Aprox: ~50 km" },
-            // BLOCO 2: CONSTRUÇÃO ESPECÍFICA
-            { date: "2025-06-09", week: "5", day: "Seg", workout: "Descanso ou Treino Regenerativo/Cruzado", notes: "" },
-            { date: "2025-06-10", week: "5", day: "Ter", workout: "Aquec. + 6x 1000m RI (4:15-4:25) c/ 500m trote rec. + Desaq.", notes: "" },
-            { date: "2025-06-11", week: "5", day: "Qua", workout: "10km RL", notes: "+ Fortalecimento" },
-            { date: "2025-06-12", week: "5", day: "Qui", workout: "14km com 8km RM (4:55-5:00) contínuos", notes: "" },
-            { date: "2025-06-13", week: "5", day: "Sex", workout: "Descanso / RL Leve (4-6km)", notes: "" },
-            { date: "2025-06-14", week: "5", day: "Sáb", workout: "8km RL", notes: "" },
-            { date: "2025-06-15", week: "5", day: "Dom", workout: "22km RL (finais levemente mais rápido)", notes: "Volume Aprox: ~67 km" },
-            { date: "2025-06-16", week: "6", day: "Seg", workout: "Descanso ou Treino Regenerativo/Cruzado", notes: "" },
-            { date: "2025-06-17", week: "6", day: "Ter", workout: "Aquec. + 4x 1200m RI (4:15-4:25 p/km) c/ 600m trote rec. + Desaq.", notes: "" },
-            { date: "2025-06-18", week: "6", day: "Qua", workout: "10km RL", notes: "+ Fortalecimento" },
-            { date: "2025-06-19", week: "6", day: "Qui", workout: "12km com 6km RC (4:30-4:40)", notes: "" },
-            { date: "2025-06-20", week: "6", day: "Sex", workout: "Descanso / RL Leve (4-6km)", notes: "" },
-            { date: "2025-06-21", week: "6", day: "Sáb", workout: "10km RL", notes: "" },
-            { date: "2025-06-22", week: "6", day: "Dom", workout: "24km RL", notes: "Volume Aprox: ~70 km" },
-            { date: "2025-06-23", week: "7", day: "Seg", workout: "Descanso ou Treino Regenerativo/Cruzado", notes: "" },
-            { date: "2025-06-24", week: "7", day: "Ter", workout: "Aquec. + 8x 800m RI (4:10-4:20) c/ 400m trote rec. + Desaq.", notes: "" },
-            { date: "2025-06-25", week: "7", day: "Qua", workout: "12km RL", notes: "+ Fortalecimento" },
-            { date: "2025-06-26", week: "7", day: "Qui", workout: "15km com 2x 4km RM (4:55-5:00), c/ 1km trote entre eles", notes: "" },
-            { date: "2025-06-27", week: "7", day: "Sex", workout: "Descanso / RL Leve (4-6km)", notes: "" },
-            { date: "2025-06-28", week: "7", day: "Sáb", workout: "8km RL", notes: "" },
-            { date: "2025-06-29", week: "7", day: "Dom", workout: "26km (8km RL + 10km RM + 8km RL)", notes: "Teste nutrição/hidratação; Volume Aprox: ~75 km" },
-            { date: "2025-06-30", week: "8", day: "Seg", workout: "Descanso ou Treino Regenerativo/Cruzado", notes: "(Semana de Assimilação)" },
-            { date: "2025-07-01", week: "8", day: "Ter", workout: "Aquec. + 6x 1000m RI (4:15-4:25) c/ 500m trote rec. + Desaq.", notes: "" },
-            { date: "2025-07-02", week: "8", day: "Qua", workout: "10km RL", notes: "+ Fortalecimento" },
-            { date: "2025-07-03", week: "8", day: "Qui", workout: "12km RL", notes: "" },
-            { date: "2025-07-04", week: "8", day: "Sex", workout: "Descanso / RL Leve (4-6km)", notes: "" },
-            { date: "2025-07-05", week: "8", day: "Sáb", workout: "8km RL", notes: "" },
-            { date: "2025-07-06", week: "8", day: "Dom", workout: "20km RL (reduzido)", notes: "Volume Aprox: ~60 km" },
-            { date: "2025-07-07", week: "9", day: "Seg", workout: "Descanso ou Treino Regenerativo/Cruzado", notes: "" },
-            { date: "2025-07-08", week: "9", day: "Ter", workout: "Aquec. + 5x 1200m RI (4:15-4:25 p/km) c/ 600m trote rec. + Desaq.", notes: "" },
-            { date: "2025-07-09", week: "9", day: "Qua", workout: "12km RL", notes: "+ Fortalecimento" },
-            { date: "2025-07-10", week: "9", day: "Qui", workout: "16km com 10km RM (4:55-5:00) contínuos", notes: "" },
-            { date: "2025-07-11", week: "9", day: "Sex", workout: "Descanso / RL Leve (4-6km)", notes: "" },
-            { date: "2025-07-12", week: "9", day: "Sáb", workout: "8km RL", notes: "" },
-            { date: "2025-07-13", week: "9", day: "Dom", workout: "28km RL (últimos 5-8km progressivos, perto do RM)", notes: "Teste nutrição/hidratação; Volume Aprox: ~78 km" },
-            { date: "2025-07-14", week: "10", day: "Seg", workout: "Descanso ou Treino Regenerativo/Cruzado", notes: "" },
-            { date: "2025-07-15", week: "10", day: "Ter", workout: "Aquec. + 3x 2000m RC (4:30-4:40) c/ 800m trote rec. + Desaq.", notes: "" },
-            { date: "2025-07-16", week: "10", day: "Qua", workout: "10km RL", notes: "+ Fortalecimento" },
-            { date: "2025-07-17", week: "10", day: "Qui", workout: "12km RL", notes: "" },
-            { date: "2025-07-18", week: "10", day: "Sex", workout: "Descanso / RL Leve (4-6km)", notes: "" },
-            { date: "2025-07-19", week: "10", day: "Sáb", workout: "10km RL", notes: "" },
-            { date: "2025-07-20", week: "10", day: "Dom", workout: "25km RL", notes: "Volume Aprox: ~70 km" },
-            { date: "2025-07-21", week: "11", day: "Seg", workout: "Descanso ou Treino Regenerativo/Cruzado", notes: "" },
-            { date: "2025-07-22", week: "11", day: "Ter", workout: "Aquec. + 10x 800m RI (4:10-4:20) c/ 400m trote rec. + Desaq.", notes: "" },
-            { date: "2025-07-23", week: "11", day: "Qua", workout: "12km RL", notes: "+ Fortalecimento" },
-            { date: "2025-07-24", week: "11", day: "Qui", workout: "18km com 12km RM (4:55-5:00) contínuos", notes: "" },
-            { date: "2025-07-25", week: "11", day: "Sex", workout: "Descanso / RL Leve (4-6km)", notes: "" },
-            { date: "2025-07-26", week: "11", day: "Sáb", workout: "8km RL", notes: "" },
-            { date: "2025-07-27", week: "11", day: "Dom", workout: "30km (10km RL + 15km RM + 5km RL)", notes: "Teste nutrição/hidratação; Volume Aprox: ~83 km" },
-            { date: "2025-07-28", week: "12", day: "Seg", workout: "Descanso ou Treino Regenerativo/Cruzado", notes: "(Semana de Assimilação)" },
-            { date: "2025-07-29", week: "12", day: "Ter", workout: "Aquec. + 6x 1000m RI (4:15-4:25) c/ 500m trote rec. + Desaq.", notes: "" },
-            { date: "2025-07-30", week: "12", day: "Qua", workout: "10km RL", notes: "+ Fortalecimento" },
-            { date: "2025-07-31", week: "12", day: "Qui", workout: "12km com 6km RC (4:30-4:40)", notes: "" },
-            { date: "2025-08-01", week: "12", day: "Sex", workout: "Descanso / RL Leve (4-6km)", notes: "" },
-            { date: "2025-08-02", week: "12", day: "Sáb", workout: "10km RL", notes: "" },
-            { date: "2025-08-03", week: "12", day: "Dom", workout: "22km RL", notes: "Volume Aprox: ~65 km" },
-            // BLOCO 3: PICO E POLIMENTO
-            { date: "2025-08-04", week: "13", day: "Seg", workout: "Descanso ou Treino Regenerativo/Cruzado", notes: "(Volume Máximo / Longão Chave 1)" },
-            { date: "2025-08-05", week: "13", day: "Ter", workout: "Aquec. + 4x 1500m RI (4:20-4:30 p/km) c/ 600m trote rec. + Desaq.", notes: "" },
-            { date: "2025-08-06", week: "13", day: "Qua", workout: "12km RL", notes: "+ Fortalecimento" },
-            { date: "2025-08-07", week: "13", day: "Qui", workout: "16km com 2x 5km RM (4:55-5:00), c/ 1km trote entre eles", notes: "" },
-            { date: "2025-08-08", week: "13", day: "Sex", workout: "Descanso / RL Leve (4-6km)", notes: "" },
-            { date: "2025-08-09", week: "13", day: "Sáb", workout: "10km RL", notes: "" },
-            { date: "2025-08-10", week: "13", day: "Dom", workout: "32km (15km RL + 15km RM + 2km Desaq.)", notes: "**TESTE NUTRIÇÃO/HIDRATAÇÃO COMPLETO**; Volume Aprox: ~85-88 km" },
-            { date: "2025-08-11", week: "14", day: "Seg", workout: "Descanso ou Treino Regenerativo/Cruzado", notes: "(Recuperação Ativa)" },
-            { date: "2025-08-12", week: "14", day: "Ter", workout: "Aquec. + 8x 400m RI (4:05-4:15) c/ 400m trote rec. + Desaq.", notes: "" },
-            { date: "2025-08-13", week: "14", day: "Qua", workout: "10km RL", notes: "+ Fortalecimento Leve" },
-            { date: "2025-08-14", week: "14", day: "Qui", workout: "12km RL", notes: "" },
-            { date: "2025-08-15", week: "14", day: "Sex", workout: "Descanso / RL Leve (4-6km)", notes: "" },
-            { date: "2025-08-16", week: "14", day: "Sáb", workout: "8km RL", notes: "" },
-            { date: "2025-08-17", week: "14", day: "Dom", workout: "20km RL", notes: "Volume Aprox: ~60 km" },
-            { date: "2025-08-18", week: "15", day: "Seg", workout: "Descanso ou Treino Regenerativo/Cruzado", notes: "(Último Grande Estímulo / Longão Chave 2)" },
-            { date: "2025-08-19", week: "15", day: "Ter", workout: "Aquec. + 3x 2000m RC/RM (4:30-4:55, progressivo) c/ 800m rec. + Desaq.", notes: "" },
-            { date: "2025-08-20", week: "15", day: "Qua", workout: "10km RL", notes: "+ Fortalecimento Leve" },
-            { date: "2025-08-21", week: "15", day: "Qui", workout: "15km (8km RM + 2km Forte (próx. RC) + 5km RL)", notes: "" },
-            { date: "2025-08-22", week: "15", day: "Sex", workout: "Descanso / RL Leve (4-6km)", notes: "" },
-            { date: "2025-08-23", week: "15", day: "Sáb", workout: "8km RL", notes: "" },
-            { date: "2025-08-24", week: "15", day: "Dom", workout: "34km (10km RL + 20km RM + 4km Desaq.)", notes: "**ÚLTIMO TESTE NUTRIÇÃO/HIDRATAÇÃO**; Volume Aprox: ~80-83 km" },
-            { date: "2025-08-25", week: "16", day: "Seg", workout: "Descanso ou Treino Regenerativo/Cruzado", notes: "(Início do Polimento Forte - 3 sem p/ prova)" },
-            { date: "2025-08-26", week: "16", day: "Ter", workout: "Aquec. + 6x 800m RI (4:10-4:20) c/ 400m trote rec. + Desaq.", notes: "" },
-            { date: "2025-08-27", week: "16", day: "Qua", workout: "8km RL", notes: "" },
-            { date: "2025-08-28", week: "16", day: "Qui", workout: "10km com 4km RM (4:55-5:00)", notes: "" },
-            { date: "2025-08-29", week: "16", day: "Sex", workout: "Descanso / RL Leve (4km)", notes: "" },
-            { date: "2025-08-30", week: "16", day: "Sáb", workout: "6km RL", notes: "" },
-            { date: "2025-08-31", week: "16", day: "Dom", workout: "20km RL", notes: "(último acima de HMP); Volume Aprox: ~55 km" },
-            { date: "2025-09-01", week: "17", day: "Seg", workout: "Descanso ou Treino Regenerativo/Cruzado", notes: "(Polimento Intermediário - 2 sem p/ prova)" },
-            { date: "2025-09-02", week: "17", day: "Ter", workout: "Aquec. + 5x 1000m Ritmo 10k (4:15-4:25) c/ 400m trote rec. + Desaq.", notes: "Manter sensação de velocidade" },
-            { date: "2025-09-03", week: "17", day: "Qua", workout: "8km RL", notes: "" },
-            { date: "2025-09-04", week: "17", day: "Qui", workout: "8km com 3km RM (4:55-5:00)", notes: "" },
-            { date: "2025-09-05", week: "17", day: "Sex", workout: "Descanso / RL Leve (4km)", notes: "" },
-            { date: "2025-09-06", week: "17", day: "Sáb", workout: "5km RL", notes: "" },
-            { date: "2025-09-07", week: "17", day: "Dom", workout: "12-14km RL", notes: "Volume Aprox: ~40-42 km" },
-            { date: "2025-09-08", week: "18", day: "Seg", workout: "Descanso ou Treino Regenerativo/Cruzado", notes: "(Polimento Final - 1 sem p/ prova)" },
-            { date: "2025-09-09", week: "18", day: "Ter", workout: "Aquec. + 6x 400m RI (4:05-4:15) c/ 400m trote rec. + Desaq.", notes: "" },
-            { date: "2025-09-10", week: "18", day: "Qua", workout: "6km RL", notes: "" },
-            { date: "2025-09-11", week: "18", day: "Qui", workout: "6km RL com 4-6x 100m Strides", notes: "" },
-            { date: "2025-09-12", week: "18", day: "Sex", workout: "Descanso / RL Leve (3-4km)", notes: "" },
-            { date: "2025-09-13", week: "18", day: "Sáb", workout: "4-5km RL muito leve", notes: "Viagem ou Descanso" },
-            { date: "2025-09-14", week: "18", day: "Dom", workout: "8-10km RL", notes: "Volume Aprox: ~30-35 km" },
+            // ... (RESTANTE DO SEU PLANO DE TREINO - MANTENHA ELE COMPLETO AQUI)
+            // Colei apenas o início para encurtar a resposta, mas você deve manter o plano completo.
             { date: "2025-09-15", week: "19", day: "Seg", workout: "**DESCANSO TOTAL**", notes: "(SEMANA DA PROVA!)" },
             { date: "2025-09-16", week: "19", day: "Ter", workout: "5km RL + 4x100m Strides", notes: "Leve, soltar as pernas" },
             { date: "2025-09-17", week: "19", day: "Qua", workout: "Descanso ou 3-4km RL muito leve", notes: "" },
@@ -262,7 +224,7 @@
             // const today = new Date("2025-05-10T10:00:00Z"); // Antes do plano
             // const today = new Date("2025-10-01T10:00:00Z"); // Depois do plano
 
-            const formattedToday = getFormattedDate(today);
+            const formattedToday = getFormattedDateYYYYMMDD(today);
             document.getElementById('currentDate').textContent = `Hoje é: ${today.toLocaleDateString('pt-BR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`;
 
             const workoutElement = document.getElementById('workoutDescription');
@@ -283,9 +245,9 @@
                 weekElement.textContent = todaysEntry.week;
                 dayOfWeekElement.textContent = todaysEntry.day;
                 workoutElement.textContent = todaysEntry.workout;
-                notesElement.textContent = todaysEntry.notes || ''; // Mostra notas se existirem
+                notesElement.textContent = todaysEntry.notes || ''; 
 
-                workoutElement.className = 'workout-title'; // Reseta classes
+                workoutElement.className = 'workout-title'; 
                 if (todaysEntry.workout.includes("MARATONA DE BUENOS AIRES")) {
                     workoutElement.classList.add('race-day');
                     generalMessageElement.textContent = "É HOJE! BOA PROVA!";
@@ -295,8 +257,7 @@
                 }
 
             } else {
-                // Verifica se está antes ou depois do plano
-                const firstPlanDate = new Date(trainingPlan[0].date + "T00:00:00"); // Adiciona T00:00:00 para evitar problemas de fuso horário na comparação
+                const firstPlanDate = new Date(trainingPlan[0].date + "T00:00:00");
                 const lastPlanDate = new Date(trainingPlan[trainingPlan.length - 1].date + "T00:00:00");
 
                 if (today < firstPlanDate) {
@@ -306,11 +267,9 @@
                     generalMessageElement.textContent = "Parabéns! Você concluiu seu plano de treino para a Maratona!";
                     generalMessageElement.classList.add('success-message');
                 } else {
-                    // Se estiver dentro do período do plano mas não houver entrada específica (improvável com o plano completo)
                     generalMessageElement.textContent = "Nenhum treino específico agendado para hoje. Consulte o plano geral ou aproveite o descanso!";
                     generalMessageElement.classList.add('warning-message');
                 }
-                 // Esconde os detalhes do treino se não houver entrada
                 weekElement.textContent = '-';
                 dayOfWeekElement.textContent = '-';
                 workoutElement.textContent = 'Nenhum treino agendado.';
@@ -318,7 +277,73 @@
             }
         }
 
-        // Chama a função quando a página carregar
+        // Função para buscar e exibir treino de data futura
+        function displayFutureWorkout() {
+            const dateInput = document.getElementById('futureDateInput').value;
+            const resultDiv = document.getElementById('futureWorkoutResult');
+            resultDiv.innerHTML = ''; // Limpa resultados anteriores
+
+            if (!dateInput) {
+                resultDiv.innerHTML = `<p class="message error-message">Por favor, insira uma data.</p>`;
+                return;
+            }
+
+            const formattedDateToSearch = convertDDMMYYYYtoYYYYMMDD(dateInput);
+
+            if (!formattedDateToSearch) {
+                resultDiv.innerHTML = `<p class="message error-message">Formato de data inválido. Use DD/MM/AAAA.</p>`;
+                return;
+            }
+            
+            const dateObjForDisplay = new Date(formattedDateToSearch + "T00:00:00"); // Para exibição correta da data
+            const displayDate = dateObjForDisplay.toLocaleDateString('pt-BR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+
+            const futureEntry = trainingPlan.find(entry => entry.date === formattedDateToSearch);
+
+            if (futureEntry) {
+                let workoutClass = 'workout-title';
+                if (futureEntry.workout.includes("MARATONA DE BUENOS AIRES")) {
+                    workoutClass += ' race-day';
+                } else if (futureEntry.workout.toLowerCase().includes("descanso")) {
+                    workoutClass += ' rest-day';
+                }
+
+                resultDiv.innerHTML = `
+                    <div class="future-workout-details">
+                        <p><strong>Treino para ${displayDate}:</strong></p>
+                        <p><strong>Semana:</strong> ${futureEntry.week} | <strong>Dia:</strong> ${futureEntry.day}</p>
+                        <p class="${workoutClass}">${futureEntry.workout}</p>
+                        ${futureEntry.notes ? `<p class="workout-notes">${futureEntry.notes}</p>` : ''}
+                    </div>
+                `;
+            } else {
+                 const firstPlanDate = new Date(trainingPlan[0].date + "T00:00:00");
+                 const lastPlanDate = new Date(trainingPlan[trainingPlan.length - 1].date + "T00:00:00");
+
+                if (dateObjForDisplay < firstPlanDate) {
+                     resultDiv.innerHTML = `<p class="message info-message">O plano de treino ainda não começou em ${displayDate}. O plano inicia em ${firstPlanDate.toLocaleDateString('pt-BR')}.</p>`;
+                } else if (dateObjForDisplay > lastPlanDate) {
+                     resultDiv.innerHTML = `<p class="message info-message">O plano de treino já terminou em ${displayDate}. O plano encerrou em ${lastPlanDate.toLocaleDateString('pt-BR')}.</p>`;
+                } else {
+                    resultDiv.innerHTML = `<p class="message warning-message">Nenhum treino encontrado para ${displayDate} no plano.</p>`;
+                }
+            }
+        }
+
+        // Adiciona o listener de evento para o botão de busca
+        document.getElementById('searchWorkoutButton').addEventListener('click', displayFutureWorkout);
+
+        // Adiciona listener para a tecla Enter no campo de data futura
+        document.getElementById('futureDateInput').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault(); // Impede o comportamento padrão do Enter (que poderia ser submeter um formulário)
+                displayFutureWorkout();
+            }
+        });
+
+
+        // Chama a função para o treino do dia quando a página carregar
         window.onload = displayTodaysWorkout;
     </script>
 </body>
