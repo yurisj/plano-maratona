@@ -24,17 +24,13 @@
             width: 90%;
             max-width: 700px;
             text-align: center;
+            margin-bottom: 20px;
         }
         h1 {
             color: #333;
             margin-bottom: 10px;
         }
-        h2 {
-            color: #555;
-            font-size: 1.2em;
-            margin-top: 0;
-        }
-        #currentDate {
+        #currentDisplayedDate {
             font-weight: bold;
             color: #007bff;
             margin-bottom: 20px;
@@ -46,6 +42,7 @@
             border: 1px solid #ddd;
             border-radius: 5px;
             background-color: #f9f9f9;
+            margin-top: 15px;
         }
         .workout-title {
             font-weight: bold;
@@ -64,40 +61,54 @@
             border-radius: 5px;
             font-weight: bold;
         }
-        .info-message {
-            background-color: #e2f3ff;
-            color: #004085;
-            border: 1px solid #b8daff;
+        .info-message { background-color: #e2f3ff; color: #004085; border: 1px solid #b8daff; }
+        .success-message { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .warning-message { background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
+        .error-message { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .race-day { color: #dc3545 !important; font-weight: bold; font-size: 1.3em; }
+        .rest-day { color: #17a2b8 !important; }
+
+        .search-area, .navigation-area {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e9ecef;
+            border-radius: 5px;
         }
-        .success-message {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
+        .search-area label, .search-area input, .search-area button, .navigation-area button {
+            margin: 5px;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
         }
-        .warning-message {
-            background-color: #fff3cd;
-            color: #856404;
-            border: 1px solid #ffeeba;
+        .search-area input[type="date"] {
+            padding: 6px; /* Ajuste para input date */
         }
-        .error-message {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
+        .search-area button, .navigation-area button {
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            border-color: #007bff;
         }
-        .race-day {
-            color: #dc3545 !important;
-            font-weight: bold;
-            font-size: 1.3em;
+        .search-area button:hover, .navigation-area button:hover {
+            background-color: #0056b3;
         }
-        .rest-day {
-            color: #17a2b8 !important;
+        .navigation-area {
+            display: flex;
+            justify-content: space-between;
         }
+        .current-view-label {
+            font-size: 0.9em;
+            color: #6c757d;
+            margin-bottom: 5px;
+        }
+
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Plano de Treino - Maratona de Buenos Aires 2025</h1>
-        <p id="currentDate"></p>
+        <p class="current-view-label">Exibindo treino para:</p>
+        <p id="currentDisplayedDate"></p>
 
         <div id="workoutInfo">
             <div class="workout-details">
@@ -109,40 +120,62 @@
         </div>
     </div>
 
+    <div class="container search-area">
+        <h2>Buscar Treino por Data</h2>
+        <label for="searchDate">Escolha uma data:</label>
+        <input type="date" id="searchDate">
+        <button id="searchButton">Buscar</button>
+    </div>
+
+    <div class="container navigation-area">
+        <button id="prevDayButton">« Dia Anterior</button>
+        <button id="todayButton">Ver Treino de Hoje</button>
+        <button id="nextDayButton">Próximo Dia »</button>
+    </div>
+
     <script>
-        // Função para formatar a data como YYYY-MM-DD para comparação
+        let currentTrainingPlan = null; // Variável global para armazenar o plano carregado
+        let currentlyDisplayedDate = new Date(); // Data atualmente exibida, inicia com hoje
+
+        // Função para formatar a data como YYYY-MM-DD
         function getFormattedDate(date) {
-            let year = date.getFullYear();
-            let month = (date.getMonth() + 1).toString().padStart(2, '0');
-            let day = date.getDate().toString().padStart(2, '0');
+            const year = date.getFullYear();
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const day = date.getDate().toString().padStart(2, '0');
             return `${year}-${month}-${day}`;
         }
 
-        // Função para carregar o plano de treino do arquivo JSON
+        // Função para formatar a data para exibição (dd/mm/aaaa, Dia da Semana)
+        function getDisplayFormattedDate(date) {
+            return date.toLocaleDateString('pt-BR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+        }
+
+
         async function loadTrainingPlan() {
             try {
-                const response = await fetch('training_plan.json'); // Nome do seu arquivo JSON
+                const response = await fetch('training_plan.json');
                 if (!response.ok) {
                     throw new Error(`Erro ao carregar o plano: ${response.status} ${response.statusText}`);
                 }
-                const planData = await response.json();
-                return planData;
+                currentTrainingPlan = await response.json(); // Armazena na variável global
+                return true;
             } catch (error) {
                 console.error("Falha ao carregar ou parsear o plano de treino:", error);
                 displayErrorMessage("Não foi possível carregar o plano de treino. Verifique o arquivo 'training_plan.json' e o console do navegador para mais detalhes.");
-                return null; // Retorna null para indicar falha
+                currentTrainingPlan = null;
+                return false;
             }
         }
 
         function displayErrorMessage(message) {
-            const workoutElement = document.getElementById('workoutDescription');
-            const notesElement = document.getElementById('workoutNotes');
+            const workoutDetailsDiv = document.querySelector('.workout-details');
             const weekElement = document.getElementById('weekNumber');
             const dayOfWeekElement = document.getElementById('dayOfWeek');
+            const workoutElement = document.getElementById('workoutDescription');
+            const notesElement = document.getElementById('workoutNotes');
             const generalMessageElement = document.getElementById('generalMessage');
-            const workoutDetailsDiv = document.querySelector('.workout-details');
 
-            workoutDetailsDiv.style.display = 'block'; // Garante que a área de detalhes esteja visível
+            workoutDetailsDiv.style.display = 'block';
             weekElement.textContent = '-';
             dayOfWeekElement.textContent = '-';
             workoutElement.textContent = 'Erro';
@@ -152,23 +185,19 @@
             generalMessageElement.className = 'message error-message';
         }
 
-
-        // Função principal para exibir o treino do dia
-        async function displayTodaysWorkout() {
-            const trainingPlan = await loadTrainingPlan();
-
-            if (!trainingPlan) { // Se o carregamento falhou, a mensagem de erro já foi exibida
+        function displayWorkoutForDate(dateToDisplay) {
+            if (!currentTrainingPlan) {
+                displayErrorMessage("Plano de treino não carregado. Tente recarregar a página.");
                 return;
             }
 
-            const today = new Date();
-            // Para testar outras datas (descomente e ajuste):
-            // const today = new Date("2025-09-21T10:00:00Z"); // Dia da Maratona
-            // const today = new Date("2025-05-10T10:00:00Z"); // Antes do plano
-            // const today = new Date("2025-10-01T10:00:00Z"); // Depois do plano
+            currentlyDisplayedDate = new Date(dateToDisplay); // Atualiza a data atualmente exibida
+             // Garante que a hora seja zerada para evitar problemas de fuso na comparação
+            currentlyDisplayedDate.setHours(0, 0, 0, 0);
 
-            const formattedToday = getFormattedDate(today);
-            document.getElementById('currentDate').textContent = `Hoje é: ${today.toLocaleDateString('pt-BR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`;
+
+            const formattedDate = getFormattedDate(currentlyDisplayedDate);
+            document.getElementById('currentDisplayedDate').textContent = getDisplayFormattedDate(currentlyDisplayedDate);
 
             const workoutElement = document.getElementById('workoutDescription');
             const notesElement = document.getElementById('workoutNotes');
@@ -177,56 +206,93 @@
             const generalMessageElement = document.getElementById('generalMessage');
             const workoutDetailsDiv = document.querySelector('.workout-details');
 
-            generalMessageElement.textContent = ''; // Limpa mensagens antigas
-            generalMessageElement.className = 'message'; // Reseta classes de mensagem
-            workoutDetailsDiv.style.display = 'none'; // Esconde detalhes por padrão
+            generalMessageElement.textContent = '';
+            generalMessageElement.className = 'message';
+            workoutDetailsDiv.style.display = 'none';
 
-            const todaysEntry = trainingPlan.find(entry => entry.date === formattedToday);
+            const entryForDate = currentTrainingPlan.find(entry => entry.date === formattedDate);
 
-            if (todaysEntry) {
+            if (entryForDate) {
                 workoutDetailsDiv.style.display = 'block';
-                weekElement.textContent = todaysEntry.week;
-                dayOfWeekElement.textContent = todaysEntry.day;
-                workoutElement.textContent = todaysEntry.workout;
-                notesElement.textContent = todaysEntry.notes || ''; // Mostra notas se existirem
+                weekElement.textContent = entryForDate.week;
+                dayOfWeekElement.textContent = entryForDate.day;
+                workoutElement.textContent = entryForDate.workout;
+                notesElement.textContent = entryForDate.notes || '';
 
-                workoutElement.className = 'workout-title'; // Reseta classes
-                if (todaysEntry.workout.includes("MARATONA DE BUENOS AIRES")) {
+                workoutElement.className = 'workout-title';
+                if (entryForDate.workout.includes("MARATONA DE BUENOS AIRES")) {
                     workoutElement.classList.add('race-day');
-                    generalMessageElement.textContent = "É HOJE! BOA PROVA!";
+                    generalMessageElement.textContent = "DIA DA PROVA!";
                     generalMessageElement.classList.add('success-message');
-                } else if (todaysEntry.workout.toLowerCase().includes("descanso")) {
-                     workoutElement.classList.add('rest-day');
+                } else if (entryForDate.workout.toLowerCase().includes("descanso")) {
+                    workoutElement.classList.add('rest-day');
                 }
-
             } else {
-                // Verifica se está antes ou depois do plano
-                // Adiciona T00:00:00 para evitar problemas de fuso horário na comparação de datas
-                const firstPlanDate = trainingPlan.length > 0 ? new Date(trainingPlan[0].date + "T00:00:00") : null;
-                const lastPlanDate = trainingPlan.length > 0 ? new Date(trainingPlan[trainingPlan.length - 1].date + "T00:00:00") : null;
-
-                workoutDetailsDiv.style.display = 'block'; // Mostra a div mesmo para mensagens gerais
+                workoutDetailsDiv.style.display = 'block';
                 weekElement.textContent = '-';
                 dayOfWeekElement.textContent = '-';
-                workoutElement.textContent = 'Nenhum treino agendado para hoje.';
+                workoutElement.textContent = 'Nenhum treino específico agendado.';
                 notesElement.textContent = '';
 
+                const firstPlanDate = currentTrainingPlan.length > 0 ? new Date(currentTrainingPlan[0].date + "T00:00:00") : null;
+                const lastPlanDate = currentTrainingPlan.length > 0 ? new Date(currentTrainingPlan[currentTrainingPlan.length - 1].date + "T00:00:00") : null;
 
-                if (firstPlanDate && today < firstPlanDate) {
-                    generalMessageElement.textContent = `Seu plano de treino começa em ${firstPlanDate.toLocaleDateString('pt-BR')}! Prepare-se!`;
+                if (firstPlanDate && currentlyDisplayedDate < firstPlanDate) {
+                    generalMessageElement.textContent = `O plano de treino começa em ${getDisplayFormattedDate(firstPlanDate)}.`;
                     generalMessageElement.classList.add('info-message');
-                } else if (lastPlanDate && today > lastPlanDate) {
-                    generalMessageElement.textContent = "Parabéns! Você concluiu seu plano de treino para a Maratona!";
-                    generalMessageElement.classList.add('success-message');
+                } else if (lastPlanDate && currentlyDisplayedDate > lastPlanDate) {
+                    generalMessageElement.textContent = "O plano de treino já foi concluído.";
+                    generalMessageElement.classList.add('info-message');
                 } else {
-                    generalMessageElement.textContent = "Nenhum treino específico agendado para hoje. Consulte o plano geral ou aproveite o descanso!";
+                    generalMessageElement.textContent = "Nenhum treino agendado para esta data.";
                     generalMessageElement.classList.add('warning-message');
                 }
             }
+             // Atualiza o valor do input de data para a data exibida
+            document.getElementById('searchDate').value = getFormattedDate(currentlyDisplayedDate);
         }
 
-        // Chama a função quando a página carregar
-        window.onload = displayTodaysWorkout;
+        // Event Listeners
+        document.getElementById('searchButton').addEventListener('click', () => {
+            const dateInput = document.getElementById('searchDate').value;
+            if (dateInput) {
+                // O input date retorna YYYY-MM-DD. O construtor Date precisa de um formato que
+                // não cause problemas de fuso. Adicionar 'T00:00:00' ajuda.
+                const selectedDate = new Date(dateInput + "T00:00:00");
+                displayWorkoutForDate(selectedDate);
+            } else {
+                alert("Por favor, selecione uma data.");
+            }
+        });
+
+        document.getElementById('prevDayButton').addEventListener('click', () => {
+            const prevDate = new Date(currentlyDisplayedDate);
+            prevDate.setDate(currentlyDisplayedDate.getDate() - 1);
+            displayWorkoutForDate(prevDate);
+        });
+
+        document.getElementById('nextDayButton').addEventListener('click', () => {
+            const nextDate = new Date(currentlyDisplayedDate);
+            nextDate.setDate(currentlyDisplayedDate.getDate() + 1);
+            displayWorkoutForDate(nextDate);
+        });
+
+        document.getElementById('todayButton').addEventListener('click', () => {
+            displayWorkoutForDate(new Date()); // Exibe o treino para a data atual
+        });
+
+
+        // Inicialização
+        async function initializeApp() {
+            const planLoaded = await loadTrainingPlan();
+            if (planLoaded) {
+                displayWorkoutForDate(new Date()); // Exibe o treino para a data atual ao carregar
+                 // Define o valor inicial do input date para a data atual
+                document.getElementById('searchDate').value = getFormattedDate(new Date());
+            }
+        }
+
+        window.onload = initializeApp;
     </script>
 </body>
 </html>
