@@ -178,7 +178,7 @@
 
     <script>
         // URL do seu Google Apps Script.
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxVCgpRl5RYaGl34AxfhcFpkplHHx4fkFMMEn8NYjlnnydL9lM_VPCz4fT7Eyb5Fjsf/exec";
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxuU2tdkezKqmumSdmW4EwtyazZsPO-2D6fE_NJ-nPwe5oYMaTbpWPJqJxiDHqAN10a/exec";
 
         let currentTrainingPlan = null; 
         let currentlyDisplayedDate = new Date(); 
@@ -351,62 +351,106 @@
             document.getElementById('searchDate').value = getFormattedDate(currentlyDisplayedDate);
         }
 
-        // Event listener para o botão de alternar status do treino
-        document.getElementById('markAsDoneButton').addEventListener('click', async () => { 
-            if (!currentTrainingPlan || !currentlyDisplayedDate) return;
 
-            const formattedDate = getFormattedDate(currentlyDisplayedDate);
-            const entryIndex = Array.isArray(currentTrainingPlan) ? currentTrainingPlan.findIndex(entry => String(entry.date) === formattedDate) : -1;
+document.getElementById('markAsDoneButton').addEventListener('click', async () => {
+    if (!currentTrainingPlan || !currentlyDisplayedDate) {
+        console.warn("Plano de treino ou data atual não definidos.");
+        return;
+    }
 
-            if (entryIndex !== -1 && typeof currentTrainingPlan[entryIndex].status === 'boolean') {
-                const newStatus = !currentTrainingPlan[entryIndex].status; 
+    const formattedDate = getFormattedDate(currentlyDisplayedDate);
+    const entryIndex = Array.isArray(currentTrainingPlan) ? currentTrainingPlan.findIndex(entry => String(entry.date) === formattedDate) : -1;
 
-                const updateData = {
-                    date: formattedDate,
-                    status: newStatus
-                };
+    if (entryIndex === -1) {
+        console.warn(`Nenhuma entrada encontrada para a data ${formattedDate} no plano local.`);
+        alert("Não foi possível encontrar o treino para esta data no plano carregado. Tente recarregar.");
+        return;
+    }
 
-                const button = document.getElementById('markAsDoneButton');
-                button.disabled = true;
-                const originalButtonText = button.textContent;
-                button.textContent = "Salvando...";
+    if (typeof currentTrainingPlan[entryIndex].status !== 'boolean') {
+        console.error(`Status inválido para a data ${formattedDate}:`, currentTrainingPlan[entryIndex].status);
+        alert("O status deste treino não é um valor válido para alteração.");
+        return;
+    }
 
-                try {
-                    const response = await fetch(SCRIPT_URL, {
-                        method: 'POST',
-                        mode: 'cors', 
-                        cache: 'no-cache',
-                        headers: {
-                            'Content-Type': 'application/json', // Importante para o Apps Script interpretar como JSON
-                        },
-                        body: JSON.stringify(updateData) 
-                    });
-                    console.log("Resposta do fetch (markAsDoneButton POST):", response);
+    const currentStatus = currentTrainingPlan[entryIndex].status;
+    const newStatus = !currentStatus;
 
-                    const result = await response.json(); 
-                    console.log("Resultado do POST (markAsDoneButton):", result);
+    const updateData = {
+        date: formattedDate,
+        status: newStatus
+    };
 
-                    if (result.success) {
-                        currentTrainingPlan[entryIndex].status = newStatus;
-                        displayWorkoutForDate(currentlyDisplayedDate); 
-                        console.log("Status atualizado com sucesso via Google Sheets:", result.message);
-                    } else {
-                        console.error("Erro ao atualizar status via Google Sheets:", result.message || JSON.stringify(result));
-                        alert("Erro ao salvar status: " + (result.message || "Verifique o console.")); 
-                        button.textContent = originalButtonText; 
-                    }
-                } catch (error) {
-                    console.error("Erro na requisição para atualizar status:", error);
-                    alert("Erro de comunicação ao salvar status. Verifique o console.");
-                    button.textContent = originalButtonText; 
-                } finally {
-                    button.disabled = false; 
-                    if (button.textContent === "Salvando...") { 
-                         displayWorkoutForDate(currentlyDisplayedDate); 
-                    }
-                }
-            }
+    const button = document.getElementById('markAsDoneButton');
+    // const originalButtonText = button.textContent; // Menos necessário se displayWorkoutForDate sempre atualiza
+
+    button.disabled = true;
+    button.textContent = "Salvando...";
+
+    try {
+        const response = await fetch(SCRIPT_URL, {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(updateData)
         });
+
+        console.log("Resposta do fetch (markAsDoneButton POST):", response.status, response.statusText);
+
+        if (!response.ok) {
+            // Tenta obter mais detalhes do erro se a resposta não for OK.
+            let errorDetails = `Erro HTTP: ${response.status} ${response.statusText}`;
+            try {
+                const errorBody = await response.text(); // Ou response.json() se o script sempre retorna JSON em erros
+                errorDetails += ` - Corpo: ${errorBody}`;
+            } catch (e) {
+                // Ignora se não conseguir ler o corpo do erro
+            }
+            throw new Error(errorDetails);
+        }
+
+        const result = await response.json();
+        console.log("Resultado do POST (markAsDoneButton):", result);
+
+        if (result.success) {
+            // Atualiza o estado local SOMENTE se o script confirmar o sucesso
+            currentTrainingPlan[entryIndex].status = newStatus;
+            console.log("Status atualizado com sucesso via Google Sheets:", result.message);
+            // A UI será atualizada no bloco finally por displayWorkoutForDate
+        } else {
+            // O script retornou success: false, então a operação falhou do lado do script
+            console.error("Erro ao atualizar status via Google Sheets:", result.message || JSON.stringify(result));
+            alert("Erro ao salvar status: " + (result.message || "O servidor reportou uma falha. Verifique o console."));
+            // Não alteramos currentTrainingPlan[entryIndex].status, então displayWorkoutForDate no finally
+            // irá reverter para o estado visual anterior (antes do "Salvando...").
+        }
+
+    } catch (error) {
+        // Erro de rede, erro ao fazer o parse do JSON, ou o erro lançado pelo `if (!response.ok)`
+        console.error("Erro na requisição para atualizar status:", error);
+        alert("Erro de comunicação ao salvar status: " + error.message + ". Verifique o console.");
+        // Não alteramos currentTrainingPlan[entryIndex].status, então displayWorkoutForDate no finally
+        // irá reverter para o estado visual anterior.
+    } finally {
+        button.disabled = false;
+        // displayWorkoutForDate irá re-renderizar a seção do treino.
+        // Se a atualização foi bem-sucedida, currentTrainingPlan[entryIndex].status terá o newStatus,
+        // e o botão refletirá isso ("Marcar como Não Feito" ou vice-versa).
+        // Se a atualização falhou (seja no script ou na comunicação),
+        // currentTrainingPlan[entryIndex].status NÃO foi alterado,
+        // então o botão voltará ao seu estado original (antes de clicar).
+        // displayWorkoutForDate também atualiza o texto do botão, sobrescrevendo "Salvando...".
+        displayWorkoutForDate(currentlyDisplayedDate);
+    }
+});
+
+
+
+
+        
 
         // Funções de navegação e inicialização
         document.getElementById('searchButton').addEventListener('click', () => {
