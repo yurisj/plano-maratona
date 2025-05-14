@@ -3,91 +3,324 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OKR Maratona</title>
+    <title>Plano OKR Maratona Buenos Aires 2025</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth; /* Para rolagem suave ao clicar nos links internos (se usássemos) */
         }
-
-        header {
-            background: #4CAF50;
-            color: white;
-            text-align: center;
-            padding: 1rem;
+        .tab-content {
+            display: none; /* Todas as abas de conteúdo começam escondidas */
         }
-
-        main {
-            padding: 0 2rem;
+        .tab-content.active {
+            display: block; /* A aba ativa é exibida */
         }
-
-        section {
-            margin: 2rem 0;
+        /* Estilo adicional para botões de aba, se necessário, mas Tailwind deve cobrir */
+        .tab-button {
+            /* Estilos base já aplicados com Tailwind, mas pode adicionar mais aqui */
         }
-
-        h2 {
-            color: #333;
-        }
-
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        ul li {
-            background: #f4f4f4;
-            margin: 0.5rem 0;
-            padding: 0.5rem;
+        .active-tab-button { /* Classe para o botão da aba ativa */
+            /* Estilos específicos para o botão ativo já aplicados com Tailwind */
         }
     </style>
 </head>
-<body>
-    <header>
-        <h1>OKR - Maratona de Buenos Aires 2025</h1>
+<body class="bg-slate-100 text-slate-800 antialiased">
+
+    <header class="bg-sky-600 text-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col sm:flex-row items-center justify-between h-auto sm:h-20 py-3 sm:py-0">
+                <h1 class="text-2xl lg:text-3xl font-bold mb-2 sm:mb-0 text-center sm:text-left">Meu Ritmo para BA 2025</h1>
+                <nav class="flex flex-wrap justify-center space-x-1 sm:space-x-2 md:space-x-4">
+                    <button onclick="showTab('okr-geral', this)" class="tab-button py-2 px-3 md:px-4 rounded-md font-semibold transition-colors duration-300 bg-sky-800 text-white">Geral</button>
+                    <button onclick="showTab('ciclo1', this)" class="tab-button py-2 px-3 md:px-4 rounded-md font-semibold transition-colors duration-300 text-sky-100 hover:bg-sky-700 hover:text-white">Ciclo 1</button>
+                    <button onclick="showTab('ciclo2', this)" class="tab-button py-2 px-3 md:px-4 rounded-md font-semibold transition-colors duration-300 text-sky-100 hover:bg-sky-700 hover:text-white">Ciclo 2</button>
+                    <button onclick="showTab('ciclo3', this)" class="tab-button py-2 px-3 md:px-4 rounded-md font-semibold transition-colors duration-300 text-sky-100 hover:bg-sky-700 hover:text-white">Ciclo 3</button>
+                </nav>
+            </div>
+        </div>
     </header>
 
-    <main>
-        <section id="okr-geral">
-            <h2>Objetivo Geral</h2>
-            <p>Correr a Maratona de Buenos Aires em 21 de Setembro de 2025 em minha melhor forma física e mental.</p>
-            <ul>
-                <li>KR1: Completar o ciclo de treino de 19 semanas com pelo menos 90% de adesão.</li>
-                <li>KR2: Executar com sucesso os 3 principais treinos longos.</li>
-                <li>KR3: Chegar à semana da prova sem lesões incapacitantes.</li>
-                <li>KR4: Cruzar a linha de chegada da Maratona de Buenos Aires.</li>
-                <li>KR5: Alcançar um tempo oficial abaixo de 3 horas e 30 minutos.</li>
-            </ul>
+    <main class="container mx-auto p-4 md:p-8">
+
+        <section id="okr-geral" class="tab-content active animate-fadeIn">
+            <h2 class="text-3xl font-bold text-sky-700 mb-3 text-center">OKR GERAL</h2>
+            <p class="text-center text-slate-600 mb-6">(Para as 19 Semanas / Meta da Prova)</p>
+
+            <div id="countdown" class="text-center my-8 p-6 bg-gradient-to-r from-sky-500 to-indigo-600 text-white rounded-xl shadow-2xl">
+                <h3 class="text-2xl md:text-3xl font-semibold mb-4">Contagem Regressiva para a Maratona!</h3>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 md:gap-4 text-center">
+                    <div><span id="countdown-days" class="text-3xl md:text-5xl font-bold">0</span><p class="text-sm md:text-base">Dias</p></div>
+                    <div><span id="countdown-hours" class="text-3xl md:text-5xl font-bold">0</span><p class="text-sm md:text-base">Horas</p></div>
+                    <div><span id="countdown-minutes" class="text-3xl md:text-5xl font-bold">0</span><p class="text-sm md:text-base">Minutos</p></div>
+                    <div><span id="countdown-seconds" class="text-3xl md:text-5xl font-bold">0</span><p class="text-sm md:text-base">Segundos</p></div>
+                </div>
+                <p id="countdown-message" class="mt-4 text-xl font-semibold"></p>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-lg p-6 md:p-8 mb-8">
+                <h3 class="text-xl font-semibold text-indigo-700 mb-4">Objetivo (O):</h3>
+                <p class="text-slate-700 leading-relaxed">Correr a Maratona de Buenos Aires em 21 de Setembro de 2025 em minha melhor forma física e mental, buscando um tempo sub-3:30 e aproveitando a jornada de preparação.</p>
+            </div>
+
+            <h3 class="text-2xl font-bold text-sky-700 mb-6 text-center">Resultados-Chave (KRs) - Geral</h3>
+
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-6 transition-shadow duration-300 hover:shadow-2xl">
+                <h4 class="text-lg font-semibold text-sky-700 mb-2">KR1: Completar ciclo de treino com adesão</h4>
+                <p class="text-sm text-slate-600 mb-1"><strong>Meta:</strong> Pelo menos 90% de adesão aos treinos planejados (volume e qualidade) nas 19 semanas.</p>
+                <p class="text-sm mt-2"><strong>Semanas com >=90% adesão:</strong> <span class="font-bold text-sky-600">____ / 19</span></p>
+                <div class="w-full bg-slate-200 rounded-full h-2.5 mt-2">
+                    <div class="bg-green-500 h-2.5 rounded-full" style="width: 0%"></div> </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-6 transition-shadow duration-300 hover:shadow-2xl">
+                <h4 class="text-lg font-semibold text-sky-700 mb-2">KR2: Executar 3 principais treinos longos</h4>
+                <p class="text-sm text-slate-600 mb-1"><strong>Meta:</strong> Manter segmentos em Ritmo Maratona (RM) propostos (4:55-5:00 min/km).</p>
+                <ul class="list-none space-y-3 mt-3 text-sm">
+                    <li class="p-3 bg-slate-50 rounded-md border border-slate-200">
+                        <strong>Semana 11 (30km):</strong> Status: <span class="font-semibold text-amber-600">[PENDENTE]</span>
+                        <br>Segmentos RM no Pace Alvo (4:55-5:00 min/km): <span class="font-semibold text-amber-600">[A VERIFICAR]</span>
+                    </li>
+                    <li class="p-3 bg-slate-50 rounded-md border border-slate-200">
+                        <strong>Semana 13 (32km):</strong> Status: <span class="font-semibold text-amber-600">[PENDENTE]</span>
+                        <br>Segmentos RM no Pace Alvo (4:55-5:00 min/km): <span class="font-semibold text-amber-600">[A VERIFICAR]</span>
+                    </li>
+                    <li class="p-3 bg-slate-50 rounded-md border border-slate-200">
+                        <strong>Semana 15 (34km):</strong> Status: <span class="font-semibold text-amber-600">[PENDENTE]</span>
+                        <br>Segmentos RM no Pace Alvo (4:55-5:00 min/km): <span class="font-semibold text-amber-600">[A VERIFICAR]</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-6 transition-shadow duration-300 hover:shadow-2xl">
+                <h4 class="text-lg font-semibold text-sky-700 mb-2">KR3: Chegar à prova sem lesões e confiante</h4>
+                <p class="text-sm text-slate-600 mb-1"><strong>Meta:</strong> Sem lesões incapacitantes e confiança autoavaliada de pelo menos 8/10 na semana da prova.</p>
+                <p class="text-sm mt-2"><strong>Status Lesões (Semana 19):</strong> <span class="font-bold text-green-600">[VERDE / AMARELO / VERMELHO]</span></p>
+                <p class="text-sm mt-1"><strong>Confiança Autoavaliada (Semana 19):</strong> <span class="font-bold text-sky-600">____ / 10</span></p>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-6 transition-shadow duration-300 hover:shadow-2xl">
+                <h4 class="text-lg font-semibold text-sky-700 mb-2">KR4: Cruzar a linha de chegada</h4>
+                <p class="text-sm text-slate-600 mb-1"><strong>Meta:</strong> Completar a Maratona de Buenos Aires em 21/09/2025.</p>
+                <p class="text-sm mt-2"><strong>Status:</strong> <span class="font-bold text-amber-600">[PENDENTE / CONQUISTADO!]</span></p>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-6 transition-shadow duration-300 hover:shadow-2xl">
+                <h4 class="text-lg font-semibold text-sky-700 mb-2">KR5: Tempo oficial na Maratona</h4>
+                <p class="text-sm text-slate-600 mb-1"><strong>Meta:</strong> Abaixo de 3 horas e 30 minutos (idealmente 3:20-3:25).</p>
+                <p class="text-sm mt-2"><strong>Tempo Oficial:</strong> <span class="font-bold text-sky-600">__h __min __s</span></p>
+            </div>
         </section>
 
-        <section id="ciclos-treino">
-            <h2>Ciclo 1: Fundação e Consistência</h2>
-            <p>Período: 12/05/2025 - 06/07/2025</p>
-            <!-- Repita esta seção para cada ciclo -->
+        <section id="ciclo1" class="tab-content animate-fadeIn">
+            <h2 class="text-3xl font-bold text-sky-700 mb-2 text-center">CICLO 1: Fundação e Consistência</h2>
+            <p class="text-center text-slate-600 mb-1"><strong>Período:</strong> 12/05/2025 - 06/07/2025 (Semanas 1-8)</p>
+            
+            <div class="bg-white rounded-xl shadow-lg p-6 md:p-8 my-6">
+                <h3 class="text-xl font-semibold text-indigo-700 mb-3">Objetivo (O):</h3>
+                <p class="text-slate-700 leading-relaxed">Construir uma base aeróbica sólida e estabelecer alta consistência nos treinos, preparando o corpo para as fases mais intensas.</p>
+            </div>
+
+            <h3 class="text-2xl font-bold text-sky-700 mb-6 text-center">Resultados-Chave (KRs) - Ciclo 1</h3>
+
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+                <h4 class="text-lg font-semibold text-sky-700 mb-2">KR1: Completar 90% dos KM planejados</h4>
+                <p class="text-sm text-slate-600"><strong>Meta:</strong> Completar 90% de todos os quilômetros planejados para as semanas 1-8.</p>
+                <p class="text-sm mt-2"><strong>Progresso KM (Semanas 1-8):</strong> <span class="font-bold text-sky-600">____%</span></p>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+                <h4 class="text-lg font-semibold text-sky-700 mb-2">KR2: Aumentar progressivamente treino longo</h4>
+                <p class="text-sm text-slate-600"><strong>Meta:</strong> De 16km (Semana 1) para 26km (Semana 7), executando de forma confortável.</p>
+                <p class="text-sm mt-2"><strong>Longo Semana 7 (26km):</strong> Status: <span class="font-bold text-amber-600">[PENDENTE]</span> Conforto: <span class="font-bold text-amber-600">[A AVALIAR]</span></p>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+                <h4 class="text-lg font-semibold text-sky-700 mb-2">KR3: Realizar 100% das sessões de fortalecimento</h4>
+                <p class="text-sm text-slate-600"><strong>Meta:</strong> 2x por semana (Total 16 sessões nas 8 semanas).</p>
+                <p class="text-sm mt-2"><strong>Sessões de Fortalecimento Realizadas:</strong> <span class="font-bold text-sky-600">____ / 16</span></p>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+                <h4 class="text-lg font-semibold text-sky-700 mb-2">KR4: Incorporar treinos com Ritmo Maratona (RM)</h4>
+                <p class="text-sm text-slate-600"><strong>Meta:</strong> A partir da Semana 3, atingindo o pace alvo em pelo menos 80% desses segmentos.</p>
+                <p class="text-sm mt-2"><strong>Sucesso nos Segmentos RM:</strong> <span class="font-bold text-sky-600">____%</span></p>
+            </div>
         </section>
-        
-        <section id="check-in-semanal">
-            <h2>Check-in Semanal</h2>
-            <div>
-                <label for="semana">Semana:</label>
-                <input type="text" id="semana" placeholder="Semana X">
+
+        <section id="ciclo2" class="tab-content animate-fadeIn">
+            <h2 class="text-3xl font-bold text-sky-700 mb-2 text-center">CICLO 2: Construção Específica e Pico de Volume</h2>
+            <p class="text-center text-slate-600 mb-1"><strong>Período:</strong> 07/07/2025 - 24/08/2025 (Semanas 9-15)</p>
+
+            <div class="bg-white rounded-xl shadow-lg p-6 md:p-8 my-6">
+                <h3 class="text-xl font-semibold text-indigo-700 mb-3">Objetivo (O):</h3>
+                <p class="text-slate-700 leading-relaxed">Maximizar a capacidade para a maratona, executando os treinos mais longos e específicos com sucesso e definindo a estratégia de prova.</p>
             </div>
-            <div>
-                <label for="confiança">Nível de Confiança:</label>
-                <input type="number" id="confiança" min="0" max="10">
+            
+            <h3 class="text-2xl font-bold text-sky-700 mb-6 text-center">Resultados-Chave (KRs) - Ciclo 2</h3>
+
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+                <h4 class="text-lg font-semibold text-sky-700 mb-2">KR1: Completar 95% dos treinos planejados</h4>
+                <p class="text-sm text-slate-600"><strong>Meta:</strong> Foco especial nos treinos de qualidade (RM e Intervalados) nas semanas 9-15.</p>
+                <p class="text-sm mt-2"><strong>Adesão Treinos (Semanas 9-15):</strong> <span class="font-bold text-sky-600">____%</span></p>
+                <p class="text-sm mt-1"><strong>Adesão Treinos de Qualidade:</strong> <span class="font-bold text-sky-600">____%</span></p>
             </div>
-            <button onclick="registrarCheckIn()">Registrar Progresso</button>
-            <div id="resultado"></div>
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+                <h4 class="text-lg font-semibold text-sky-700 mb-2">KR2: Executar os 3 treinos longos chave</h4>
+                <p class="text-sm text-slate-600"><strong>Meta:</strong> Semana 11 (30km), Semana 13 (32km), Semana 15 (34km) conforme planejado, incluindo todos os segmentos em RM no pace alvo.</p>
+                <ul class="list-none space-y-2 mt-3 text-sm">
+                     <li class="p-2 bg-slate-50 rounded-md"><strong>30km (Semana 11):</strong> Status: <span class="font-semibold text-amber-600">[PENDENTE]</span></li>
+                     <li class="p-2 bg-slate-50 rounded-md"><strong>32km (Semana 13):</strong> Status: <span class="font-semibold text-amber-600">[PENDENTE]</span></li>
+                     <li class="p-2 bg-slate-50 rounded-md"><strong>34km (Semana 15):</strong> Status: <span class="font-semibold text-amber-600">[PENDENTE]</span></li>
+                </ul>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+                <h4 class="text-lg font-semibold text-sky-700 mb-2">KR3: Testar e refinar estratégia de nutrição/hidratação</h4>
+                <p class="text-sm text-slate-600"><strong>Meta:</strong> Durante longões das Semanas 11, 13 e 15. Finalizar plano até Semana 15.</p>
+                <p class="text-sm mt-2"><strong>Plano de Nutrição/Hidratação Finalizado (Semana 15):</strong> <span class="font-bold text-amber-600">[NÃO / SIM]</span></p>
+                <p class="text-xs mt-1 text-slate-500">Detalhes/Testes: <span class="font-semibold text-amber-600">[A REGISTRAR]</span></p>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+                <h4 class="text-lg font-semibold text-sky-700 mb-2">KR4: Manter percepção de esforço em RM</h4>
+                <p class="text-sm text-slate-600"><strong>Meta:</strong> "Confortavelmente difícil" e não "muito difícil" na maioria das vezes.</p>
+                <p class="text-sm mt-2"><strong>Percepção de Esforço Média em RM:</strong> <span class="font-bold text-amber-600">[A AVALIAR]</span></p>
+            </div>
+        </section>
+
+        <section id="ciclo3" class="tab-content animate-fadeIn">
+            <h2 class="text-3xl font-bold text-sky-700 mb-2 text-center">CICLO 3: Polimento e Preparação Final</h2>
+            <p class="text-center text-slate-600 mb-1"><strong>Período:</strong> 25/08/2025 - 21/09/2025 (Semanas 16-19 + Dia da Prova)</p>
+
+            <div class="bg-white rounded-xl shadow-lg p-6 md:p-8 my-6">
+                <h3 class="text-xl font-semibold text-indigo-700 mb-3">Objetivo (O):</h3>
+                <p class="text-slate-700 leading-relaxed">Executar o polimento de forma impecável, garantindo recuperação física e mental ótima para chegar à linha de largada pronto para o melhor desempenho.</p>
+            </div>
+
+            <h3 class="text-2xl font-bold text-sky-700 mb-6 text-center">Resultados-Chave (KRs) - Ciclo 3</h3>
+
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+                <h4 class="text-lg font-semibold text-sky-700 mb-2">KR1: Aderir 100% à redução de volume</h4>
+                <p class="text-sm text-slate-600"><strong>Meta:</strong> Semanas 16-18, sem adicionar treinos "para compensar".</p>
+                <p class="text-sm mt-2"><strong>Adesão à Redução (Semanas 16-18):</strong> <span class="font-bold text-amber-600">[A ACOMPANHAR]</span></p>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+                <h4 class="text-lg font-semibold text-sky-700 mb-2">KR2: Dormir 7-8 horas por noite</h4>
+                <p class="text-sm text-slate-600"><strong>Meta:</strong> Média durante as 3 semanas que antecedem a prova.</p>
+                <p class="text-sm mt-2"><strong>Média de Sono (Semanas 16-18):</strong> <span class="font-bold text-sky-600">____ horas/noite</span></p>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+                <h4 class="text-lg font-semibold text-sky-700 mb-2">KR3: Executar treinos de estímulo leve</h4>
+                <p class="text-sm text-slate-600"><strong>Meta:</strong> Semanas 18 e 19 sentindo as pernas "leves e rápidas".</p>
+                <p class="text-sm mt-2"><strong>Sensação nas Pernas (Semanas 18-19):</strong> <span class="font-bold text-amber-600">[A AVALIAR]</span></p>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+                <h4 class="text-lg font-semibold text-sky-700 mb-2">KR4: Finalizar preparativos logísticos e de equipamento</h4>
+                <p class="text-sm text-slate-600"><strong>Meta:</strong> Até quinta-feira da semana da maratona (18/09/2025).</p>
+                <ul class="list-disc list-inside text-sm space-y-1 mt-2 text-slate-700">
+                    <li>Passagens e Hospedagem OK: <span class="font-semibold text-amber-600">[ ]</span></li>
+                    <li>Kit da Prova: <span class="font-semibold text-amber-600">[ ]</span></li>
+                    <li>Tênis da Prova Definido: <span class="font-semibold text-amber-600">[ ]</span></li>
+                    <li>Roupa da Prova Definida: <span class="font-semibold text-amber-600">[ ]</span></li>
+                    <li>Suplementação Separada: <span class="font-semibold text-amber-600">[ ]</span></li>
+                    <li>Estratégia de Pace Revisada: <span class="font-semibold text-amber-600">[ ]</span></li>
+                </ul>
+                 <p class="text-sm mt-2"><strong>Checklist Concluído em 18/09/2025:</strong> <span class="font-bold text-amber-600">[NÃO / SIM]</span></p>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+                <h4 class="text-lg font-semibold text-sky-700 mb-2">KR5: Executar estratégia de pace e nutrição/hidratação na prova</h4>
+                <p class="text-sm text-slate-600"><strong>Meta:</strong> Conforme planejado durante a Maratona de Buenos Aires.</p>
+                <p class="text-sm mt-2"><strong>Relato Pós-Prova:</strong> <span class="font-bold text-amber-600">[A PREENCHER]</span></p>
+            </div>
         </section>
     </main>
 
-    <script>
-        function registrarCheckIn() {
-            const semana = document.getElementById("semana").value;
-            const confiança = document.getElementById("confiança").value;
-            const resultado = document.getElementById("resultado");
+    <footer class="text-center p-8 text-slate-500 text-sm">
+        <p>Boa sorte na sua jornada para a Maratona de Buenos Aires 2025!</p>
+        <p>&copy; Feito para Acompanhamento Pessoal.</p>
+    </footer>
 
-            resultado.innerHTML = `<p>Semana ${semana} registrada com nível de confiança ${confiança}/10.</p>`;
+    <script>
+        // Função para trocar as abas de conteúdo
+        function showTab(tabId, clickedButton) {
+            // Esconde todos os conteúdos de aba
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => {
+                content.classList.remove('active');
+                content.classList.remove('animate-fadeIn'); // Remove a animação para futuras trocas
+            });
+
+            // Mostra o conteúdo da aba selecionada e adiciona animação
+            const activeContent = document.getElementById(tabId);
+            activeContent.classList.add('active');
+            // Força reflow para reiniciar a animação se a mesma aba for clicada (ou para garantir que funcione)
+            void activeContent.offsetWidth; 
+            activeContent.classList.add('animate-fadeIn');
+
+
+            // Atualiza os estilos dos botões
+            const buttons = document.querySelectorAll('.tab-button');
+            buttons.forEach(button => {
+                button.classList.remove('bg-sky-800', 'text-white'); // Remove estilo ativo
+                button.classList.add('text-sky-100', 'hover:bg-sky-700', 'hover:text-white'); // Adiciona estilo inativo
+            });
+            
+            // Adiciona estilo ativo ao botão clicado
+            clickedButton.classList.remove('text-sky-100', 'hover:bg-sky-700', 'hover:text-white');
+            clickedButton.classList.add('bg-sky-800', 'text-white');
         }
+
+        // Script da Contagem Regressiva
+        const countdownDate = new Date("2025-09-21T07:00:00").getTime(); // Ajuste a hora da largada se necessário
+
+        const countdownFunction = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = countdownDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Atualiza os elementos no HTML
+            // Verifica se os elementos existem antes de tentar atualizar
+            if (document.getElementById("countdown-days")) {
+                 document.getElementById("countdown-days").innerText = days < 0 ? 0 : days;
+                 document.getElementById("countdown-hours").innerText = hours < 0 ? 0 : hours;
+                 document.getElementById("countdown-minutes").innerText = minutes < 0 ? 0 : minutes;
+                 document.getElementById("countdown-seconds").innerText = seconds < 0 ? 0 : seconds;
+            }
+
+
+            if (distance < 0) {
+                clearInterval(countdownFunction);
+                 if (document.getElementById("countdown")) {
+                    // Mantém os números zerados e exibe a mensagem
+                    document.getElementById("countdown-days").innerText = 0;
+                    document.getElementById("countdown-hours").innerText = 0;
+                    document.getElementById("countdown-minutes").innerText = 0;
+                    document.getElementById("countdown-seconds").innerText = 0;
+                    document.getElementById("countdown-message").innerHTML = "A Maratona Chegou! Boa Sorte!";
+                 }
+            }
+        }, 1000);
+
+        // Adiciona uma classe para animação de fadeIn simples
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            .animate-fadeIn {
+                animation: fadeIn 0.5s ease-out forwards;
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Chama a função de contagem regressiva uma vez no carregamento para evitar delay
+        if (document.getElementById("countdown-days")) { // Garante que o script só rode se os elementos existirem
+             countdownFunction();
+        }
+
     </script>
+
 </body>
 </html>
