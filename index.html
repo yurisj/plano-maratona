@@ -56,7 +56,6 @@
             margin-top: 5px;
             font-size: 0.9em;
         }
-        /* Estilo para o status do treino */
         #workoutStatus {
             font-weight: bold;
         }
@@ -65,6 +64,25 @@
         }
         .status-nao-feito {
             color: red;
+        }
+        /* Estilo para o botão de marcar como feito */
+        #markAsDoneButton {
+            margin-left: 10px; 
+            padding: 5px 10px;
+            background-color: #28a745; /* Verde */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background-color 0.3s ease;
+        }
+        #markAsDoneButton:hover:not(:disabled) {
+            background-color: #218838; /* Verde mais escuro no hover */
+        }
+        #markAsDoneButton:disabled {
+            background-color: #6c757d; /* Cinza */
+            cursor: not-allowed;
         }
         .message {
             margin-top: 20px;
@@ -126,7 +144,7 @@
                 <p><strong>Semana:</strong> <span id="weekNumber">-</span> | <strong>Dia:</strong> <span id="dayOfWeek">-</span></p>
                 <p class="workout-title" id="workoutDescription">Carregando treino...</p>
                 <p class="workout-notes" id="workoutNotes"></p>
-                <p><strong>Status:</strong> <span id="workoutStatus">-</span></p> 
+                <p><strong>Status:</strong> <span id="workoutStatus">-</span> <button id="markAsDoneButton" style="display: none;">Marcar como Feito</button></p>
             </div>
             <p id="generalMessage" class="message"></p>
         </div>
@@ -149,24 +167,27 @@
         let currentTrainingPlan = null; 
         let currentlyDisplayedDate = new Date(); 
 
+        // Função para formatar a data como YYYY-MM-DD
         function getFormattedDate(date) {
             const year = date.getFullYear();
-            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Meses são 0-indexados
             const day = date.getDate().toString().padStart(2, '0');
             return `${year}-${month}-${day}`;
         }
 
+        // Função para formatar a data para exibição (dd/mm/aaaa, Dia da Semana)
         function getDisplayFormattedDate(date) {
             return date.toLocaleDateString('pt-BR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
         }
 
+        // Carrega o plano de treino do arquivo JSON
         async function loadTrainingPlan() {
             try {
-                const response = await fetch('training_plan.json');
+                const response = await fetch('training_plan.json'); // Assume que o JSON está na mesma pasta
                 if (!response.ok) {
                     throw new Error(`Erro ao carregar o plano: ${response.status} ${response.statusText}`);
                 }
-                currentTrainingPlan = await response.json();
+                currentTrainingPlan = await response.json(); // Armazena na variável global
                 return true;
             } catch (error) {
                 console.error("Falha ao carregar ou parsear o plano de treino:", error);
@@ -176,6 +197,7 @@
             }
         }
 
+        // Exibe uma mensagem de erro na interface
         function displayErrorMessage(message) {
             const workoutDetailsDiv = document.querySelector('.workout-details');
             const weekElement = document.getElementById('weekNumber');
@@ -183,7 +205,8 @@
             const workoutElement = document.getElementById('workoutDescription');
             const notesElement = document.getElementById('workoutNotes');
             const generalMessageElement = document.getElementById('generalMessage');
-            const workoutStatusElement = document.getElementById('workoutStatus'); // Referência ao elemento de status
+            const workoutStatusElement = document.getElementById('workoutStatus');
+            const markAsDoneButton = document.getElementById('markAsDoneButton');
 
             workoutDetailsDiv.style.display = 'block'; 
             weekElement.textContent = '-';
@@ -191,12 +214,14 @@
             workoutElement.textContent = 'Erro';
             workoutElement.style.color = 'red'; 
             notesElement.textContent = '';
-            workoutStatusElement.textContent = '-'; // Limpa o status em caso de erro
-            workoutStatusElement.className = ''; // Remove classes de cor do status
+            workoutStatusElement.textContent = '-'; 
+            workoutStatusElement.className = ''; 
+            if(markAsDoneButton) markAsDoneButton.style.display = 'none'; // Esconde o botão em caso de erro
             generalMessageElement.textContent = message;
             generalMessageElement.className = 'message error-message'; 
         }
 
+        // Exibe o treino para a data fornecida
         function displayWorkoutForDate(dateToDisplay) {
             if (!currentTrainingPlan) {
                 displayErrorMessage("Plano de treino não carregado. Tente recarregar a página.");
@@ -204,7 +229,7 @@
             }
 
             currentlyDisplayedDate = new Date(dateToDisplay); 
-            currentlyDisplayedDate.setHours(0, 0, 0, 0);
+            currentlyDisplayedDate.setHours(0, 0, 0, 0); // Zera a hora para comparações de data consistentes
 
             const formattedDate = getFormattedDate(currentlyDisplayedDate);
             document.getElementById('currentDisplayedDate').textContent = getDisplayFormattedDate(currentlyDisplayedDate);
@@ -215,13 +240,15 @@
             const dayOfWeekElement = document.getElementById('dayOfWeek');
             const generalMessageElement = document.getElementById('generalMessage');
             const workoutDetailsDiv = document.querySelector('.workout-details');
-            const workoutStatusElement = document.getElementById('workoutStatus'); // Obter o elemento do status
+            const workoutStatusElement = document.getElementById('workoutStatus');
+            const markAsDoneButton = document.getElementById('markAsDoneButton');
 
             generalMessageElement.textContent = '';
             generalMessageElement.className = 'message'; 
             workoutDetailsDiv.style.display = 'none'; 
-            workoutStatusElement.textContent = '-'; // Reset status text
-            workoutStatusElement.className = ''; // Reset status class/color
+            workoutStatusElement.textContent = '-'; 
+            workoutStatusElement.className = ''; 
+            markAsDoneButton.style.display = 'none'; // Esconde o botão por padrão
 
             const entryForDate = currentTrainingPlan.find(entry => entry.date === formattedDate);
 
@@ -232,19 +259,27 @@
                 workoutElement.textContent = entryForDate.workout;
                 notesElement.textContent = entryForDate.notes || ''; 
 
-                // Exibir o status do treino
+                // Exibe o status do treino
                 if (typeof entryForDate.status !== 'undefined') { 
                     if (entryForDate.status === true) {
                         workoutStatusElement.textContent = "Feito";
-                        workoutStatusElement.className = 'status-feito'; // Aplica classe para cor verde
+                        workoutStatusElement.className = 'status-feito';
+                        markAsDoneButton.textContent = 'Feito!';
+                        markAsDoneButton.disabled = true;
+                        markAsDoneButton.style.display = 'inline-block';
                     } else if (entryForDate.status === false) {
                         workoutStatusElement.textContent = "Não feito";
-                        workoutStatusElement.className = 'status-nao-feito'; // Aplica classe para cor vermelha
+                        workoutStatusElement.className = 'status-nao-feito';
+                        markAsDoneButton.textContent = 'Marcar como Feito';
+                        markAsDoneButton.disabled = false;
+                        markAsDoneButton.style.display = 'inline-block';
                     } else {
                         workoutStatusElement.textContent = "-"; 
+                        markAsDoneButton.style.display = 'none';
                     }
                 } else {
                     workoutStatusElement.textContent = "-"; 
+                    markAsDoneButton.style.display = 'none'; // Não mostra o botão se não houver status
                 }
 
                 workoutElement.className = 'workout-title'; 
@@ -261,7 +296,8 @@
                 dayOfWeekElement.textContent = '-';
                 workoutElement.textContent = 'Nenhum treino específico agendado.';
                 notesElement.textContent = '';
-                workoutStatusElement.textContent = '-'; // Limpa o status se não houver treino
+                workoutStatusElement.textContent = '-'; 
+                markAsDoneButton.style.display = 'none'; // Esconde o botão se não houver treino
 
                 const firstPlanDate = currentTrainingPlan.length > 0 ? new Date(currentTrainingPlan[0].date + "T00:00:00") : null;
                 const lastPlanDate = currentTrainingPlan.length > 0 ? new Date(currentTrainingPlan[currentTrainingPlan.length - 1].date + "T00:00:00") : null;
@@ -280,35 +316,54 @@
             document.getElementById('searchDate').value = getFormattedDate(currentlyDisplayedDate);
         }
 
+        // Event listener para o botão de busca
         document.getElementById('searchButton').addEventListener('click', () => {
             const dateInput = document.getElementById('searchDate').value;
             if (dateInput) {
-                const selectedDate = new Date(dateInput + "T00:00:00");
+                const selectedDate = new Date(dateInput + "T00:00:00"); // Adiciona T00:00:00 para evitar problemas de fuso
                 displayWorkoutForDate(selectedDate);
             } else {
-                // Em vez de alert, poderia ser uma mensagem na UI
                 const generalMessageElement = document.getElementById('generalMessage');
                 generalMessageElement.textContent = "Por favor, selecione uma data.";
                 generalMessageElement.className = 'message warning-message';
             }
         });
 
+        // Event listener para o botão "Dia Anterior"
         document.getElementById('prevDayButton').addEventListener('click', () => {
             const prevDate = new Date(currentlyDisplayedDate);
             prevDate.setDate(currentlyDisplayedDate.getDate() - 1);
             displayWorkoutForDate(prevDate);
         });
 
+        // Event listener para o botão "Próximo Dia"
         document.getElementById('nextDayButton').addEventListener('click', () => {
             const nextDate = new Date(currentlyDisplayedDate);
             nextDate.setDate(currentlyDisplayedDate.getDate() + 1);
             displayWorkoutForDate(nextDate);
         });
 
+        // Event listener para o botão "Ver Treino de Hoje"
         document.getElementById('todayButton').addEventListener('click', () => {
             displayWorkoutForDate(new Date()); 
         });
+        
+        // Event listener para o botão "Marcar como Feito"
+        document.getElementById('markAsDoneButton').addEventListener('click', () => {
+            if (!currentTrainingPlan || !currentlyDisplayedDate) return;
 
+            const formattedDate = getFormattedDate(currentlyDisplayedDate);
+            const entryIndex = currentTrainingPlan.findIndex(entry => entry.date === formattedDate);
+
+            if (entryIndex !== -1 && currentTrainingPlan[entryIndex].status === false) {
+                currentTrainingPlan[entryIndex].status = true;
+                // Nota: Esta alteração é apenas em memória e será perdida ao recarregar a página,
+                // pois não estamos salvando de volta no arquivo training_plan.json.
+                displayWorkoutForDate(currentlyDisplayedDate); // Atualiza a exibição
+            }
+        });
+
+        // Inicialização da aplicação
         async function initializeApp() {
             const planLoaded = await loadTrainingPlan();
             if (planLoaded) {
@@ -317,7 +372,9 @@
             }
         }
 
+        // Garante que o DOM está carregado antes de executar o script
         window.onload = initializeApp; 
     </script>
 </body>
 </html>
+
