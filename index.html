@@ -65,11 +65,11 @@
         .status-nao-feito {
             color: red;
         }
-        /* Estilo para o botão de marcar como feito */
+        
+        /* Estilos para o botão de status */
         #markAsDoneButton {
             margin-left: 10px; 
             padding: 5px 10px;
-            background-color: #28a745; /* Verde */
             color: white;
             border: none;
             border-radius: 4px;
@@ -77,13 +77,26 @@
             font-size: 0.9em;
             transition: background-color 0.3s ease;
         }
-        #markAsDoneButton:hover:not(:disabled) {
-            background-color: #218838; /* Verde mais escuro no hover */
+
+        .button-mark-done { /* Estilo para o botão "Marcar como Feito" (verde) */
+            background-color: #28a745; 
         }
-        #markAsDoneButton:disabled {
-            background-color: #6c757d; /* Cinza */
+        .button-mark-done:hover:not(:disabled) {
+            background-color: #218838; 
+        }
+
+        .button-mark-not-done { /* Estilo para o botão "Marcar como Não Feito" (vermelho) */
+            background-color: #dc3545; 
+        }
+        .button-mark-not-done:hover:not(:disabled) {
+            background-color: #c82333; 
+        }
+
+        #markAsDoneButton:disabled { /* Estilo para botão desabilitado (se necessário no futuro) */
+            background-color: #6c757d; 
             cursor: not-allowed;
         }
+
         .message {
             margin-top: 20px;
             padding: 10px;
@@ -144,7 +157,8 @@
                 <p><strong>Semana:</strong> <span id="weekNumber">-</span> | <strong>Dia:</strong> <span id="dayOfWeek">-</span></p>
                 <p class="workout-title" id="workoutDescription">Carregando treino...</p>
                 <p class="workout-notes" id="workoutNotes"></p>
-                <p><strong>Status:</strong> <span id="workoutStatus">-</span> <button id="markAsDoneButton" style="display: none;">Marcar como Feito</button></p>
+                <p><strong>Status:</strong> <span id="workoutStatus">-</span></p>
+                <p><button id="markAsDoneButton" style="display: none;"></button></p>
             </div>
             <p id="generalMessage" class="message"></p>
         </div>
@@ -170,7 +184,7 @@
         // Função para formatar a data como YYYY-MM-DD
         function getFormattedDate(date) {
             const year = date.getFullYear();
-            const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Meses são 0-indexados
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
             const day = date.getDate().toString().padStart(2, '0');
             return `${year}-${month}-${day}`;
         }
@@ -183,11 +197,11 @@
         // Carrega o plano de treino do arquivo JSON
         async function loadTrainingPlan() {
             try {
-                const response = await fetch('training_plan.json'); // Assume que o JSON está na mesma pasta
+                const response = await fetch('training_plan.json');
                 if (!response.ok) {
                     throw new Error(`Erro ao carregar o plano: ${response.status} ${response.statusText}`);
                 }
-                currentTrainingPlan = await response.json(); // Armazena na variável global
+                currentTrainingPlan = await response.json();
                 return true;
             } catch (error) {
                 console.error("Falha ao carregar ou parsear o plano de treino:", error);
@@ -216,7 +230,7 @@
             notesElement.textContent = '';
             workoutStatusElement.textContent = '-'; 
             workoutStatusElement.className = ''; 
-            if(markAsDoneButton) markAsDoneButton.style.display = 'none'; // Esconde o botão em caso de erro
+            if(markAsDoneButton) markAsDoneButton.style.display = 'none';
             generalMessageElement.textContent = message;
             generalMessageElement.className = 'message error-message'; 
         }
@@ -229,7 +243,7 @@
             }
 
             currentlyDisplayedDate = new Date(dateToDisplay); 
-            currentlyDisplayedDate.setHours(0, 0, 0, 0); // Zera a hora para comparações de data consistentes
+            currentlyDisplayedDate.setHours(0, 0, 0, 0); 
 
             const formattedDate = getFormattedDate(currentlyDisplayedDate);
             document.getElementById('currentDisplayedDate').textContent = getDisplayFormattedDate(currentlyDisplayedDate);
@@ -249,6 +263,7 @@
             workoutStatusElement.textContent = '-'; 
             workoutStatusElement.className = ''; 
             markAsDoneButton.style.display = 'none'; // Esconde o botão por padrão
+            markAsDoneButton.disabled = false; // Habilita o botão por padrão (se exibido)
 
             const entryForDate = currentTrainingPlan.find(entry => entry.date === formattedDate);
 
@@ -259,27 +274,23 @@
                 workoutElement.textContent = entryForDate.workout;
                 notesElement.textContent = entryForDate.notes || ''; 
 
-                // Exibe o status do treino
-                if (typeof entryForDate.status !== 'undefined') { 
-                    if (entryForDate.status === true) {
+                // Exibe o status e configura o botão
+                if (typeof entryForDate.status === 'boolean') { 
+                    markAsDoneButton.style.display = 'inline-block'; // Mostra o botão
+                    if (entryForDate.status === true) { // Se o treino está FEITO
                         workoutStatusElement.textContent = "Feito";
                         workoutStatusElement.className = 'status-feito';
-                        markAsDoneButton.textContent = 'Feito!';
-                        markAsDoneButton.disabled = true;
-                        markAsDoneButton.style.display = 'inline-block';
-                    } else if (entryForDate.status === false) {
+                        markAsDoneButton.textContent = 'Marcar como Não Feito';
+                        markAsDoneButton.className = 'button-mark-not-done'; // Botão vermelho
+                    } else { // Se o treino está NÃO FEITO (status === false)
                         workoutStatusElement.textContent = "Não feito";
                         workoutStatusElement.className = 'status-nao-feito';
                         markAsDoneButton.textContent = 'Marcar como Feito';
-                        markAsDoneButton.disabled = false;
-                        markAsDoneButton.style.display = 'inline-block';
-                    } else {
-                        workoutStatusElement.textContent = "-"; 
-                        markAsDoneButton.style.display = 'none';
+                        markAsDoneButton.className = 'button-mark-done'; // Botão verde
                     }
-                } else {
+                } else { // Se não há propriedade status ou não é booleano
                     workoutStatusElement.textContent = "-"; 
-                    markAsDoneButton.style.display = 'none'; // Não mostra o botão se não houver status
+                    markAsDoneButton.style.display = 'none'; // Esconde o botão
                 }
 
                 workoutElement.className = 'workout-title'; 
@@ -290,14 +301,14 @@
                 } else if (entryForDate.workout.toLowerCase().includes("descanso")) {
                     workoutElement.classList.add('rest-day');
                 }
-            } else {
+            } else { // Nenhum treino para a data
                 workoutDetailsDiv.style.display = 'block'; 
                 weekElement.textContent = '-';
                 dayOfWeekElement.textContent = '-';
                 workoutElement.textContent = 'Nenhum treino específico agendado.';
                 notesElement.textContent = '';
                 workoutStatusElement.textContent = '-'; 
-                markAsDoneButton.style.display = 'none'; // Esconde o botão se não houver treino
+                markAsDoneButton.style.display = 'none'; 
 
                 const firstPlanDate = currentTrainingPlan.length > 0 ? new Date(currentTrainingPlan[0].date + "T00:00:00") : null;
                 const lastPlanDate = currentTrainingPlan.length > 0 ? new Date(currentTrainingPlan[currentTrainingPlan.length - 1].date + "T00:00:00") : null;
@@ -320,7 +331,7 @@
         document.getElementById('searchButton').addEventListener('click', () => {
             const dateInput = document.getElementById('searchDate').value;
             if (dateInput) {
-                const selectedDate = new Date(dateInput + "T00:00:00"); // Adiciona T00:00:00 para evitar problemas de fuso
+                const selectedDate = new Date(dateInput + "T00:00:00");
                 displayWorkoutForDate(selectedDate);
             } else {
                 const generalMessageElement = document.getElementById('generalMessage');
@@ -348,15 +359,16 @@
             displayWorkoutForDate(new Date()); 
         });
         
-        // Event listener para o botão "Marcar como Feito"
+        // Event listener para o botão de alternar status do treino
         document.getElementById('markAsDoneButton').addEventListener('click', () => {
             if (!currentTrainingPlan || !currentlyDisplayedDate) return;
 
             const formattedDate = getFormattedDate(currentlyDisplayedDate);
             const entryIndex = currentTrainingPlan.findIndex(entry => entry.date === formattedDate);
 
-            if (entryIndex !== -1 && currentTrainingPlan[entryIndex].status === false) {
-                currentTrainingPlan[entryIndex].status = true;
+            // Verifica se a entrada existe e se tem a propriedade status como booleano
+            if (entryIndex !== -1 && typeof currentTrainingPlan[entryIndex].status === 'boolean') {
+                currentTrainingPlan[entryIndex].status = !currentTrainingPlan[entryIndex].status; // Alterna o status
                 // Nota: Esta alteração é apenas em memória e será perdida ao recarregar a página,
                 // pois não estamos salvando de volta no arquivo training_plan.json.
                 displayWorkoutForDate(currentlyDisplayedDate); // Atualiza a exibição
@@ -372,7 +384,6 @@
             }
         }
 
-        // Garante que o DOM está carregado antes de executar o script
         window.onload = initializeApp; 
     </script>
 </body>
