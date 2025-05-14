@@ -4,6 +4,7 @@
         "week": "1",
         "day": "Seg",
         "workout": "Atividade Leve + Fortalecimento",
+        "km": "0",
         "notes": "Sentiu Fácil. Excelente!",
         "status": true
     },
@@ -12,6 +13,7 @@
         "week": "1",
         "day": "Ter",
         "workout": "10km RL @ 5:30 min/km (Originalmente de Quinta)",
+        "km": "10",
         "notes": "Sentiu Fácil, FC controlado. Ótimo!",
         "status": true
     },
@@ -20,6 +22,7 @@
         "week": "1",
         "day": "Qua",
         "workout": "8km RL",
+        "km": "8",
         "notes": "+ Fortalecimento (opcional/leve, já que fez na Seg) ou foco mobilidade",
         "status": false
     },
@@ -28,6 +31,7 @@
         "week": "1",
         "day": "Qui",
         "workout": "Aquec. + 8x 400m RI (4:05-4:15) c/ 400m trote rec. + Desaq.",
+        "km": "9,6",
         "notes": "(Originalmente de Terça) - Primeiro treino de intensidade.",
         "status": false
     },
@@ -36,6 +40,7 @@
         "week": "1",
         "day": "Sex",
         "workout": "Descanso / RL Leve (4-6km)",
+        "km": "0",
         "notes": "",
         "status": false
     },
@@ -44,6 +49,7 @@
         "week": "1",
         "day": "Sáb",
         "workout": "6km RL",
+        "km": "6",
         "notes": "",
         "status": false
     },
@@ -52,6 +58,7 @@
         "week": "1",
         "day": "Dom",
         "workout": "16km RL",
+        "km": "16",
         "notes": "Volume Aprox: ~48-50 km",
         "status": false
     },
@@ -60,6 +67,7 @@
         "week": "2",
         "day": "Seg",
         "workout": "Descanso ou Treino Regenerativo/Cruzado",
+        "km": "0",
         "notes": "",
         "status": false
     },
@@ -68,6 +76,7 @@
         "week": "2",
         "day": "Ter",
         "workout": "Aquec. + 6x 800m RI (4:10-4:20) c/ 400m trote rec. + Desaq.",
+        "km": "7,2",
         "notes": "",
         "status": false
     },
@@ -76,6 +85,7 @@
         "week": "2",
         "day": "Qua",
         "workout": "8km RL",
+        "km": "8",
         "notes": "+ Fortalecimento",
         "status": false
     },
@@ -84,6 +94,7 @@
         "week": "2",
         "day": "Qui",
         "workout": "10km com 4km RC (4:30-4:40) no meio",
+        "km": "10",
         "notes": "",
         "status": false
     },
@@ -92,6 +103,7 @@
         "week": "2",
         "day": "Sex",
         "workout": "Descanso / RL Leve (4-6km)",
+        "km": "0",
         "notes": "",
         "status": false
     },
@@ -100,6 +112,7 @@
         "week": "2",
         "day": "Sáb",
         "workout": "8km RL",
+        "km": "8",
         "notes": "",
         "status": false
     },
@@ -108,6 +121,7 @@
         "week": "2",
         "day": "Dom",
         "workout": "18km RL",
+        "km": "18",
         "notes": "Volume Aprox: ~55 km",
         "status": false
     },
@@ -116,6 +130,7 @@
         "week": "3",
         "day": "Seg",
         "workout": "Descanso ou Treino Regenerativo/Cruzado",
+        "km": "0",
         "notes": "",
         "status": false
     },
@@ -124,6 +139,7 @@
         "week": "3",
         "day": "Ter",
         "workout": "Aquec. + 5x 1000m RI (4:15-4:25) c/ 500m trote rec. + Desaq.",
+        "km": "7,5",
         "notes": "",
         "status": false
     },
@@ -132,6 +148,7 @@
         "week": "3",
         "day": "Qua",
         "workout": "10km RL",
+        "km": "10",
         "notes": "+ Fortalecimento",
         "status": false
     },
@@ -140,6 +157,7 @@
         "week": "3",
         "day": "Qui",
         "workout": "12km com 2x 3km RM (4:55-5:00), c/ 1km trote entre eles",
+        "km": "12",
         "notes": "",
         "status": false
     },
@@ -147,7 +165,8 @@
         "date": "2025-05-30",
         "week": "3",
         "day": "Sex",
-        "workout": "Descanso / RL Leve (4-6km)",
+        "workout": "Descanso / RL Leve (6km)",
+        "km": "6",
         "notes": "",
         "status": false
     },
@@ -156,6 +175,7 @@
         "week": "3",
         "day": "Sáb",
         "workout": "8km RL",
+        "km": "8",
         "notes": "",
         "status": false
     },
@@ -164,6 +184,7 @@
         "week": "3",
         "day": "Dom",
         "workout": "20km RL",
+        "km": "20",
         "notes": "Volume Aprox: ~62 km",
         "status": false
     },
@@ -172,6 +193,7 @@
         "week": "4",
         "day": "Seg",
         "workout": "Descanso ou Treino Regenerativo/Cruzado",
+        "km": "0",
         "notes": "(Semana de Assimilação)",
         "status": false
     },
@@ -180,6 +202,7 @@
         "week": "4",
         "day": "Ter",
         "workout": "Aquec. + 10x 400m RI (4:05-4:15) c/ 400m trote rec. + Desaq.",
+        "km": "8",
         "notes": "",
         "status": false
     },
@@ -188,6 +211,7 @@
         "week": "4",
         "day": "Qua",
         "workout": "8km RL",
+        "km": "8",
         "notes": "+ Fortalecimento",
         "status": false
     },
@@ -196,6 +220,7 @@
         "week": "4",
         "day": "Qui",
         "workout": "10km RL",
+        "km": "10",
         "notes": "",
         "status": false
     },
@@ -203,7 +228,8 @@
         "date": "2025-06-06",
         "week": "4",
         "day": "Sex",
-        "workout": "Descanso / RL Leve (4-6km)",
+        "workout": "Descanso / RL Leve (6km)",
+        "km": "6",
         "notes": "",
         "status": false
     },
@@ -212,6 +238,7 @@
         "week": "4",
         "day": "Sáb",
         "workout": "6km RL",
+        "km": "6",
         "notes": "",
         "status": false
     },
@@ -220,6 +247,7 @@
         "week": "4",
         "day": "Dom",
         "workout": "16km RL (reduzido)",
+        "km": "16",
         "notes": "Volume Aprox: ~50 km",
         "status": false
     },
@@ -228,6 +256,7 @@
         "week": "5",
         "day": "Seg",
         "workout": "Descanso ou Treino Regenerativo/Cruzado",
+        "km": "0",
         "notes": "",
         "status": false
     },
@@ -236,6 +265,7 @@
         "week": "5",
         "day": "Ter",
         "workout": "Aquec. + 6x 1000m RI (4:15-4:25) c/ 500m trote rec. + Desaq.",
+        "km": "9",
         "notes": "",
         "status": false
     },
@@ -244,6 +274,7 @@
         "week": "5",
         "day": "Qua",
         "workout": "10km RL",
+        "km": "10",
         "notes": "+ Fortalecimento",
         "status": false
     },
@@ -252,6 +283,7 @@
         "week": "5",
         "day": "Qui",
         "workout": "14km com 8km RM (4:55-5:00) contínuos",
+        "km": "14",
         "notes": "",
         "status": false
     },
@@ -259,7 +291,8 @@
         "date": "2025-06-13",
         "week": "5",
         "day": "Sex",
-        "workout": "Descanso / RL Leve (4-6km)",
+        "workout": "Descanso / RL Leve (6km)",
+        "km": "6",
         "notes": "",
         "status": false
     },
@@ -268,6 +301,7 @@
         "week": "5",
         "day": "Sáb",
         "workout": "8km RL",
+        "km": "8",
         "notes": "",
         "status": false
     },
@@ -276,6 +310,7 @@
         "week": "5",
         "day": "Dom",
         "workout": "22km RL (finais levemente mais rápido)",
+        "km": "22",
         "notes": "Volume Aprox: ~67 km",
         "status": false
     },
@@ -284,6 +319,7 @@
         "week": "6",
         "day": "Seg",
         "workout": "Descanso ou Treino Regenerativo/Cruzado",
+        "km": "0",
         "notes": "",
         "status": false
     },
@@ -292,6 +328,7 @@
         "week": "6",
         "day": "Ter",
         "workout": "Aquec. + 4x 1200m RI (4:15-4:25 p/km) c/ 600m trote rec. + Desaq.",
+        "km": "7,2",
         "notes": "",
         "status": false
     },
@@ -300,6 +337,7 @@
         "week": "6",
         "day": "Qua",
         "workout": "10km RL",
+        "km": "10",
         "notes": "+ Fortalecimento",
         "status": false
     },
@@ -308,6 +346,7 @@
         "week": "6",
         "day": "Qui",
         "workout": "12km com 6km RC (4:30-4:40)",
+        "km": "12",
         "notes": "",
         "status": false
     },
@@ -315,7 +354,8 @@
         "date": "2025-06-20",
         "week": "6",
         "day": "Sex",
-        "workout": "Descanso / RL Leve (4-6km)",
+        "workout": "Descanso / RL Leve (6km)",
+        "km": "6",
         "notes": "",
         "status": false
     },
@@ -324,6 +364,7 @@
         "week": "6",
         "day": "Sáb",
         "workout": "10km RL",
+        "km": "10",
         "notes": "",
         "status": false
     },
@@ -332,6 +373,7 @@
         "week": "6",
         "day": "Dom",
         "workout": "24km RL",
+        "km": "24",
         "notes": "Volume Aprox: ~70 km",
         "status": false
     },
@@ -340,6 +382,7 @@
         "week": "7",
         "day": "Seg",
         "workout": "Descanso ou Treino Regenerativo/Cruzado",
+        "km": "0",
         "notes": "",
         "status": false
     },
@@ -348,6 +391,7 @@
         "week": "7",
         "day": "Ter",
         "workout": "Aquec. + 8x 800m RI (4:10-4:20) c/ 400m trote rec. + Desaq.",
+        "km": "9,6",
         "notes": "",
         "status": false
     },
@@ -356,6 +400,7 @@
         "week": "7",
         "day": "Qua",
         "workout": "12km RL",
+        "km": "12",
         "notes": "+ Fortalecimento",
         "status": false
     },
@@ -364,6 +409,7 @@
         "week": "7",
         "day": "Qui",
         "workout": "15km com 2x 4km RM (4:55-5:00), c/ 1km trote entre eles",
+        "km": "15",
         "notes": "",
         "status": false
     },
@@ -371,7 +417,8 @@
         "date": "2025-06-27",
         "week": "7",
         "day": "Sex",
-        "workout": "Descanso / RL Leve (4-6km)",
+        "workout": "Descanso / RL Leve (6km)",
+        "km": "6",
         "notes": "",
         "status": false
     },
@@ -380,6 +427,7 @@
         "week": "7",
         "day": "Sáb",
         "workout": "8km RL",
+        "km": "8",
         "notes": "",
         "status": false
     },
@@ -388,6 +436,7 @@
         "week": "7",
         "day": "Dom",
         "workout": "26km (8km RL + 10km RM + 8km RL)",
+        "km": "26",
         "notes": "Teste nutrição/hidratação; Volume Aprox: ~75 km",
         "status": false
     },
@@ -396,6 +445,7 @@
         "week": "8",
         "day": "Seg",
         "workout": "Descanso ou Treino Regenerativo/Cruzado",
+        "km": "0",
         "notes": "(Semana de Assimilação)",
         "status": false
     },
@@ -404,6 +454,7 @@
         "week": "8",
         "day": "Ter",
         "workout": "Aquec. + 6x 1000m RI (4:15-4:25) c/ 500m trote rec. + Desaq.",
+        "km": "9",
         "notes": "",
         "status": false
     },
@@ -412,6 +463,7 @@
         "week": "8",
         "day": "Qua",
         "workout": "10km RL",
+        "km": "10",
         "notes": "+ Fortalecimento",
         "status": false
     },
@@ -420,6 +472,7 @@
         "week": "8",
         "day": "Qui",
         "workout": "12km RL",
+        "km": "12",
         "notes": "",
         "status": false
     },
@@ -427,7 +480,8 @@
         "date": "2025-07-04",
         "week": "8",
         "day": "Sex",
-        "workout": "Descanso / RL Leve (4-6km)",
+        "workout": "Descanso / RL Leve (6km)",
+        "km": "6",
         "notes": "",
         "status": false
     },
@@ -436,6 +490,7 @@
         "week": "8",
         "day": "Sáb",
         "workout": "8km RL",
+        "km": "8",
         "notes": "",
         "status": false
     },
@@ -444,6 +499,7 @@
         "week": "8",
         "day": "Dom",
         "workout": "20km RL (reduzido)",
+        "km": "20",
         "notes": "Volume Aprox: ~60 km",
         "status": false
     },
@@ -452,6 +508,7 @@
         "week": "9",
         "day": "Seg",
         "workout": "Descanso ou Treino Regenerativo/Cruzado",
+        "km": "0",
         "notes": "",
         "status": false
     },
@@ -460,6 +517,7 @@
         "week": "9",
         "day": "Ter",
         "workout": "Aquec. + 5x 1200m RI (4:15-4:25 p/km) c/ 600m trote rec. + Desaq.",
+        "km": "9",
         "notes": "",
         "status": false
     },
@@ -468,6 +526,7 @@
         "week": "9",
         "day": "Qua",
         "workout": "12km RL",
+        "km": "12",
         "notes": "+ Fortalecimento",
         "status": false
     },
@@ -476,6 +535,7 @@
         "week": "9",
         "day": "Qui",
         "workout": "16km com 10km RM (4:55-5:00) contínuos",
+        "km": "16",
         "notes": "",
         "status": false
     },
@@ -483,7 +543,8 @@
         "date": "2025-07-11",
         "week": "9",
         "day": "Sex",
-        "workout": "Descanso / RL Leve (4-6km)",
+        "workout": "Descanso / RL Leve (6km)",
+        "km": "6",
         "notes": "",
         "status": false
     },
@@ -492,6 +553,7 @@
         "week": "9",
         "day": "Sáb",
         "workout": "8km RL",
+        "km": "8",
         "notes": "",
         "status": false
     },
@@ -500,6 +562,7 @@
         "week": "9",
         "day": "Dom",
         "workout": "28km RL (últimos 5-8km progressivos, perto do RM)",
+        "km": "28",
         "notes": "Teste nutrição/hidratação; Volume Aprox: ~78 km",
         "status": false
     },
@@ -508,6 +571,7 @@
         "week": "10",
         "day": "Seg",
         "workout": "Descanso ou Treino Regenerativo/Cruzado",
+        "km": "0",
         "notes": "",
         "status": false
     },
@@ -516,6 +580,7 @@
         "week": "10",
         "day": "Ter",
         "workout": "Aquec. + 3x 2000m RC (4:30-4:40) c/ 800m trote rec. + Desaq.",
+        "km": "8,4",
         "notes": "",
         "status": false
     },
@@ -524,6 +589,7 @@
         "week": "10",
         "day": "Qua",
         "workout": "10km RL",
+        "km": "10",
         "notes": "+ Fortalecimento",
         "status": false
     },
@@ -532,6 +598,7 @@
         "week": "10",
         "day": "Qui",
         "workout": "12km RL",
+        "km": "12",
         "notes": "",
         "status": false
     },
@@ -539,7 +606,8 @@
         "date": "2025-07-18",
         "week": "10",
         "day": "Sex",
-        "workout": "Descanso / RL Leve (4-6km)",
+        "workout": "Descanso / RL Leve (6km)",
+        "km": "6",
         "notes": "",
         "status": false
     },
@@ -548,6 +616,7 @@
         "week": "10",
         "day": "Sáb",
         "workout": "10km RL",
+        "km": "10",
         "notes": "",
         "status": false
     },
@@ -556,6 +625,7 @@
         "week": "10",
         "day": "Dom",
         "workout": "25km RL",
+        "km": "25",
         "notes": "Volume Aprox: ~70 km",
         "status": false
     },
@@ -564,6 +634,7 @@
         "week": "11",
         "day": "Seg",
         "workout": "Descanso ou Treino Regenerativo/Cruzado",
+        "km": "0",
         "notes": "",
         "status": false
     },
@@ -572,6 +643,7 @@
         "week": "11",
         "day": "Ter",
         "workout": "Aquec. + 10x 800m RI (4:10-4:20) c/ 400m trote rec. + Desaq.",
+        "km": "12",
         "notes": "",
         "status": false
     },
@@ -580,6 +652,7 @@
         "week": "11",
         "day": "Qua",
         "workout": "12km RL",
+        "km": "12",
         "notes": "+ Fortalecimento",
         "status": false
     },
@@ -588,6 +661,7 @@
         "week": "11",
         "day": "Qui",
         "workout": "18km com 12km RM (4:55-5:00) contínuos",
+        "km": "18",
         "notes": "",
         "status": false
     },
@@ -595,7 +669,8 @@
         "date": "2025-07-25",
         "week": "11",
         "day": "Sex",
-        "workout": "Descanso / RL Leve (4-6km)",
+        "workout": "Descanso / RL Leve (6km)",
+        "km": "6",
         "notes": "",
         "status": false
     },
@@ -604,6 +679,7 @@
         "week": "11",
         "day": "Sáb",
         "workout": "8km RL",
+        "km": "8",
         "notes": "",
         "status": false
     },
@@ -612,6 +688,7 @@
         "week": "11",
         "day": "Dom",
         "workout": "30km (10km RL + 15km RM + 5km RL)",
+        "km": "30",
         "notes": "Teste nutrição/hidratação; Volume Aprox: ~83 km",
         "status": false
     },
@@ -620,6 +697,7 @@
         "week": "12",
         "day": "Seg",
         "workout": "Descanso ou Treino Regenerativo/Cruzado",
+        "km": "0",
         "notes": "(Semana de Assimilação)",
         "status": false
     },
@@ -628,6 +706,7 @@
         "week": "12",
         "day": "Ter",
         "workout": "Aquec. + 6x 1000m RI (4:15-4:25) c/ 500m trote rec. + Desaq.",
+        "km": "9",
         "notes": "",
         "status": false
     },
@@ -636,6 +715,7 @@
         "week": "12",
         "day": "Qua",
         "workout": "10km RL",
+        "km": "10",
         "notes": "+ Fortalecimento",
         "status": false
     },
@@ -644,6 +724,7 @@
         "week": "12",
         "day": "Qui",
         "workout": "12km com 6km RC (4:30-4:40)",
+        "km": "12",
         "notes": "",
         "status": false
     },
@@ -651,7 +732,8 @@
         "date": "2025-08-01",
         "week": "12",
         "day": "Sex",
-        "workout": "Descanso / RL Leve (4-6km)",
+        "workout": "Descanso / RL Leve (6km)",
+        "km": "6",
         "notes": "",
         "status": false
     },
@@ -660,6 +742,7 @@
         "week": "12",
         "day": "Sáb",
         "workout": "10km RL",
+        "km": "10",
         "notes": "",
         "status": false
     },
@@ -668,6 +751,7 @@
         "week": "12",
         "day": "Dom",
         "workout": "22km RL",
+        "km": "22",
         "notes": "Volume Aprox: ~65 km",
         "status": false
     },
@@ -676,6 +760,7 @@
         "week": "13",
         "day": "Seg",
         "workout": "Descanso ou Treino Regenerativo/Cruzado",
+        "km": "0",
         "notes": "(Volume Máximo / Longão Chave 1)",
         "status": false
     },
@@ -684,6 +769,7 @@
         "week": "13",
         "day": "Ter",
         "workout": "Aquec. + 4x 1500m RI (4:20-4:30 p/km) c/ 600m trote rec. + Desaq.",
+        "km": "8,4",
         "notes": "",
         "status": false
     },
@@ -692,6 +778,7 @@
         "week": "13",
         "day": "Qua",
         "workout": "12km RL",
+        "km": "12",
         "notes": "+ Fortalecimento",
         "status": false
     },
@@ -700,6 +787,7 @@
         "week": "13",
         "day": "Qui",
         "workout": "16km com 2x 5km RM (4:55-5:00), c/ 1km trote entre eles",
+        "km": "16",
         "notes": "",
         "status": false
     },
@@ -707,7 +795,8 @@
         "date": "2025-08-08",
         "week": "13",
         "day": "Sex",
-        "workout": "Descanso / RL Leve (4-6km)",
+        "workout": "Descanso / RL Leve (6km)",
+        "km": "6",
         "notes": "",
         "status": false
     },
@@ -716,6 +805,7 @@
         "week": "13",
         "day": "Sáb",
         "workout": "10km RL",
+        "km": "10",
         "notes": "",
         "status": false
     },
@@ -724,6 +814,7 @@
         "week": "13",
         "day": "Dom",
         "workout": "32km (15km RL + 15km RM + 2km Desaq.)",
+        "km": "32",
         "notes": "**TESTE NUTRIÇÃO/HIDRATAÇÃO COMPLETO**; Volume Aprox: ~85-88 km",
         "status": false
     },
@@ -732,6 +823,7 @@
         "week": "14",
         "day": "Seg",
         "workout": "Descanso ou Treino Regenerativo/Cruzado",
+        "km": "0",
         "notes": "(Recuperação Ativa)",
         "status": false
     },
@@ -740,6 +832,7 @@
         "week": "14",
         "day": "Ter",
         "workout": "Aquec. + 8x 400m RI (4:05-4:15) c/ 400m trote rec. + Desaq.",
+        "km": "6,4",
         "notes": "",
         "status": false
     },
@@ -748,6 +841,7 @@
         "week": "14",
         "day": "Qua",
         "workout": "10km RL",
+        "km": "10",
         "notes": "+ Fortalecimento Leve",
         "status": false
     },
@@ -756,6 +850,7 @@
         "week": "14",
         "day": "Qui",
         "workout": "12km RL",
+        "km": "12",
         "notes": "",
         "status": false
     },
@@ -763,7 +858,8 @@
         "date": "2025-08-15",
         "week": "14",
         "day": "Sex",
-        "workout": "Descanso / RL Leve (4-6km)",
+        "workout": "Descanso / RL Leve (6km)",
+        "km": "6",
         "notes": "",
         "status": false
     },
@@ -772,6 +868,7 @@
         "week": "14",
         "day": "Sáb",
         "workout": "8km RL",
+        "km": "8",
         "notes": "",
         "status": false
     },
@@ -780,6 +877,7 @@
         "week": "14",
         "day": "Dom",
         "workout": "20km RL",
+        "km": "20",
         "notes": "Volume Aprox: ~60 km",
         "status": false
     },
@@ -788,6 +886,7 @@
         "week": "15",
         "day": "Seg",
         "workout": "Descanso ou Treino Regenerativo/Cruzado",
+        "km": "0",
         "notes": "(Último Grande Estímulo / Longão Chave 2)",
         "status": false
     },
@@ -796,6 +895,7 @@
         "week": "15",
         "day": "Ter",
         "workout": "Aquec. + 3x 2000m RC/RM (4:30-4:55, progressivo) c/ 800m rec. + Desaq.",
+        "km": "8,4",
         "notes": "",
         "status": false
     },
@@ -804,6 +904,7 @@
         "week": "15",
         "day": "Qua",
         "workout": "10km RL",
+        "km": "10",
         "notes": "+ Fortalecimento Leve",
         "status": false
     },
@@ -812,6 +913,7 @@
         "week": "15",
         "day": "Qui",
         "workout": "15km (8km RM + 2km Forte (próx. RC) + 5km RL)",
+        "km": "15",
         "notes": "",
         "status": false
     },
@@ -819,7 +921,8 @@
         "date": "2025-08-22",
         "week": "15",
         "day": "Sex",
-        "workout": "Descanso / RL Leve (4-6km)",
+        "workout": "Descanso / RL Leve (6km)",
+        "km": "6",
         "notes": "",
         "status": false
     },
@@ -828,6 +931,7 @@
         "week": "15",
         "day": "Sáb",
         "workout": "8km RL",
+        "km": "8",
         "notes": "",
         "status": false
     },
@@ -836,6 +940,7 @@
         "week": "15",
         "day": "Dom",
         "workout": "34km (10km RL + 20km RM + 4km Desaq.)",
+        "km": "34",
         "notes": "**ÚLTIMO TESTE NUTRIÇÃO/HIDRATAÇÃO**; Volume Aprox: ~80-83 km",
         "status": false
     },
@@ -844,6 +949,7 @@
         "week": "16",
         "day": "Seg",
         "workout": "Descanso ou Treino Regenerativo/Cruzado",
+        "km": "0",
         "notes": "(Início do Polimento Forte - 3 sem p/ prova)",
         "status": false
     },
@@ -852,6 +958,7 @@
         "week": "16",
         "day": "Ter",
         "workout": "Aquec. + 6x 800m RI (4:10-4:20) c/ 400m trote rec. + Desaq.",
+        "km": "7,2",
         "notes": "",
         "status": false
     },
@@ -860,6 +967,7 @@
         "week": "16",
         "day": "Qua",
         "workout": "8km RL",
+        "km": "8",
         "notes": "",
         "status": false
     },
@@ -868,6 +976,7 @@
         "week": "16",
         "day": "Qui",
         "workout": "10km com 4km RM (4:55-5:00)",
+        "km": "10",
         "notes": "",
         "status": false
     },
@@ -876,6 +985,7 @@
         "week": "16",
         "day": "Sex",
         "workout": "Descanso / RL Leve (4km)",
+        "km": "4",
         "notes": "",
         "status": false
     },
@@ -884,6 +994,7 @@
         "week": "16",
         "day": "Sáb",
         "workout": "6km RL",
+        "km": "6",
         "notes": "",
         "status": false
     },
@@ -892,6 +1003,7 @@
         "week": "16",
         "day": "Dom",
         "workout": "20km RL",
+        "km": "20",
         "notes": "(último acima de HMP); Volume Aprox: ~55 km",
         "status": false
     },
@@ -900,6 +1012,7 @@
         "week": "17",
         "day": "Seg",
         "workout": "Descanso ou Treino Regenerativo/Cruzado",
+        "km": "0",
         "notes": "(Polimento Intermediário - 2 sem p/ prova)",
         "status": false
     },
@@ -908,6 +1021,7 @@
         "week": "17",
         "day": "Ter",
         "workout": "Aquec. + 5x 1000m Ritmo 10k (4:15-4:25) c/ 400m trote rec. + Desaq.",
+        "km": "7",
         "notes": "Manter sensação de velocidade",
         "status": false
     },
@@ -916,6 +1030,7 @@
         "week": "17",
         "day": "Qua",
         "workout": "8km RL",
+        "km": "8",
         "notes": "",
         "status": false
     },
@@ -924,6 +1039,7 @@
         "week": "17",
         "day": "Qui",
         "workout": "8km com 3km RM (4:55-5:00)",
+        "km": "8",
         "notes": "",
         "status": false
     },
@@ -932,6 +1048,7 @@
         "week": "17",
         "day": "Sex",
         "workout": "Descanso / RL Leve (4km)",
+        "km": "4",
         "notes": "",
         "status": false
     },
@@ -940,6 +1057,7 @@
         "week": "17",
         "day": "Sáb",
         "workout": "5km RL",
+        "km": "5",
         "notes": "",
         "status": false
     },
@@ -948,6 +1066,7 @@
         "week": "17",
         "day": "Dom",
         "workout": "12-14km RL",
+        "km": "12",
         "notes": "Volume Aprox: ~40-42 km",
         "status": false
     },
@@ -956,6 +1075,7 @@
         "week": "18",
         "day": "Seg",
         "workout": "Descanso ou Treino Regenerativo/Cruzado",
+        "km": "0",
         "notes": "(Polimento Final - 1 sem p/ prova)",
         "status": false
     },
@@ -964,6 +1084,7 @@
         "week": "18",
         "day": "Ter",
         "workout": "Aquec. + 6x 400m RI (4:05-4:15) c/ 400m trote rec. + Desaq.",
+        "km": "4,8",
         "notes": "",
         "status": false
     },
@@ -972,6 +1093,7 @@
         "week": "18",
         "day": "Qua",
         "workout": "6km RL",
+        "km": "6",
         "notes": "",
         "status": false
     },
@@ -980,6 +1102,7 @@
         "week": "18",
         "day": "Qui",
         "workout": "6km RL com 4-6x 100m Strides",
+        "km": "6",
         "notes": "",
         "status": false
     },
@@ -987,7 +1110,8 @@
         "date": "2025-09-12",
         "week": "18",
         "day": "Sex",
-        "workout": "Descanso / RL Leve (3-4km)",
+        "workout": "Descanso / RL Leve (4km)",
+        "km": "4",
         "notes": "",
         "status": false
     },
@@ -995,15 +1119,17 @@
         "date": "2025-09-13",
         "week": "18",
         "day": "Sáb",
-        "workout": "4-5km RL muito leve",
-        "notes": "Viagem ou Descanso",
+        "workout": "5km RL muito leve",
+        "km": "5",
+        "notes": "Descanso",
         "status": false
     },
     {
         "date": "2025-09-14",
         "week": "18",
         "day": "Dom",
-        "workout": "8-10km RL",
+        "workout": "10km RL",
+        "km": "10",
         "notes": "Volume Aprox: ~30-35 km",
         "status": false
     },
@@ -1012,6 +1138,7 @@
         "week": "19",
         "day": "Seg",
         "workout": "**DESCANSO TOTAL**",
+        "km": "0",
         "notes": "(SEMANA DA PROVA!)",
         "status": false
     },
@@ -1020,6 +1147,7 @@
         "week": "19",
         "day": "Ter",
         "workout": "5km RL + 4x100m Strides",
+        "km": "5",
         "notes": "Leve, soltar as pernas",
         "status": false
     },
@@ -1027,7 +1155,8 @@
         "date": "2025-09-17",
         "week": "19",
         "day": "Qua",
-        "workout": "Descanso ou 3-4km RL muito leve",
+        "workout": "VIAGEM",
+        "km": "0",
         "notes": "",
         "status": false
     },
@@ -1035,7 +1164,8 @@
         "date": "2025-09-18",
         "week": "19",
         "day": "Qui",
-        "workout": "Viagem / Descanso",
+        "workout": "Descanso ou 3km RL muito leve",
+        "km": "3",
         "notes": "",
         "status": false
     },
@@ -1044,6 +1174,7 @@
         "week": "19",
         "day": "Sex",
         "workout": "2-3km RL muito leve + 2x100m Strides",
+        "km": "3",
         "notes": "Soltar as pernas no local",
         "status": false
     },
@@ -1052,6 +1183,7 @@
         "week": "19",
         "day": "Sáb",
         "workout": "**DESCANSO TOTAL**",
+        "km": "0",
         "notes": "Preparar tudo. Mentalizar.",
         "status": false
     },
@@ -1060,6 +1192,7 @@
         "week": "19",
         "day": "Dom",
         "workout": "**MARATONA DE BUENOS AIRES!**",
+        "km": "42",
         "notes": "**BOA PROVA!**",
         "status": false
     }
