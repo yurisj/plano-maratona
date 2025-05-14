@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu Plano de Treino - Maratona de Buenos Aires</title>
+    <title>Maratona de Buenos Aires</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -29,6 +29,8 @@
         h1 {
             color: #333;
             margin-bottom: 10px;
+            /* Tamanho da fonte do título principal ajustado */
+            font-size: 1.2em; /* Você pode ajustar este valor conforme necessário */
         }
         #currentDisplayedDate {
             font-weight: bold;
@@ -106,7 +108,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Plano de Treino - Maratona de Buenos Aires 2025</h1>
+        <h1>Maratona de Buenos Aires 2025</h1>
         <p class="current-view-label">Exibindo treino para:</p>
         <p id="currentDisplayedDate"></p>
 
@@ -117,6 +119,7 @@
                 <p class="workout-notes" id="workoutNotes"></p>
             </div>
             <p id="generalMessage" class="message"></p>
+            .
         </div>
     </div>
     
@@ -153,7 +156,7 @@
 
         async function loadTrainingPlan() {
             try {
-                const response = await fetch('training_plan.json');
+                const response = await fetch('training_plan.json'); // Assume que o arquivo JSON está na mesma pasta
                 if (!response.ok) {
                     throw new Error(`Erro ao carregar o plano: ${response.status} ${response.statusText}`);
                 }
@@ -175,14 +178,14 @@
             const notesElement = document.getElementById('workoutNotes');
             const generalMessageElement = document.getElementById('generalMessage');
 
-            workoutDetailsDiv.style.display = 'block';
+            workoutDetailsDiv.style.display = 'block'; // Garante que a div de detalhes seja visível para mostrar o erro
             weekElement.textContent = '-';
             dayOfWeekElement.textContent = '-';
             workoutElement.textContent = 'Erro';
-            workoutElement.style.color = 'red';
+            workoutElement.style.color = 'red'; // Destaca a mensagem de erro
             notesElement.textContent = '';
             generalMessageElement.textContent = message;
-            generalMessageElement.className = 'message error-message';
+            generalMessageElement.className = 'message error-message'; // Aplica a classe de erro
         }
 
         function displayWorkoutForDate(dateToDisplay) {
@@ -206,20 +209,22 @@
             const generalMessageElement = document.getElementById('generalMessage');
             const workoutDetailsDiv = document.querySelector('.workout-details');
 
+            // Limpa mensagens anteriores e reseta estilos
             generalMessageElement.textContent = '';
-            generalMessageElement.className = 'message';
-            workoutDetailsDiv.style.display = 'none';
+            generalMessageElement.className = 'message'; // Reseta para a classe base
+            workoutDetailsDiv.style.display = 'none'; // Esconde detalhes até encontrar um treino
 
             const entryForDate = currentTrainingPlan.find(entry => entry.date === formattedDate);
 
             if (entryForDate) {
-                workoutDetailsDiv.style.display = 'block';
+                workoutDetailsDiv.style.display = 'block'; // Mostra os detalhes do treino
                 weekElement.textContent = entryForDate.week;
                 dayOfWeekElement.textContent = entryForDate.day;
                 workoutElement.textContent = entryForDate.workout;
-                notesElement.textContent = entryForDate.notes || '';
+                notesElement.textContent = entryForDate.notes || ''; // Exibe notas se existirem
 
-                workoutElement.className = 'workout-title';
+                // Reseta classes de estilo do título do treino antes de adicionar novas
+                workoutElement.className = 'workout-title'; // Classe padrão
                 if (entryForDate.workout.includes("MARATONA DE BUENOS AIRES")) {
                     workoutElement.classList.add('race-day');
                     generalMessageElement.textContent = "DIA DA PROVA!";
@@ -228,12 +233,14 @@
                     workoutElement.classList.add('rest-day');
                 }
             } else {
-                workoutDetailsDiv.style.display = 'block';
+                // Se nenhum treino específico para a data, exibe uma mensagem informativa
+                workoutDetailsDiv.style.display = 'block'; // Mostra a div para a mensagem
                 weekElement.textContent = '-';
                 dayOfWeekElement.textContent = '-';
                 workoutElement.textContent = 'Nenhum treino específico agendado.';
                 notesElement.textContent = '';
 
+                // Verifica se a data está fora do intervalo do plano
                 const firstPlanDate = currentTrainingPlan.length > 0 ? new Date(currentTrainingPlan[0].date + "T00:00:00") : null;
                 const lastPlanDate = currentTrainingPlan.length > 0 ? new Date(currentTrainingPlan[currentTrainingPlan.length - 1].date + "T00:00:00") : null;
 
@@ -244,6 +251,7 @@
                     generalMessageElement.textContent = "O plano de treino já foi concluído.";
                     generalMessageElement.classList.add('info-message');
                 } else {
+                    // Nenhuma entrada para a data, mas dentro do período geral do plano (ou plano vazio)
                     generalMessageElement.textContent = "Nenhum treino agendado para esta data.";
                     generalMessageElement.classList.add('warning-message');
                 }
@@ -261,7 +269,7 @@
                 const selectedDate = new Date(dateInput + "T00:00:00");
                 displayWorkoutForDate(selectedDate);
             } else {
-                alert("Por favor, selecione uma data.");
+                alert("Por favor, selecione uma data."); // Considerar substituir alert por uma mensagem na UI
             }
         });
 
@@ -292,7 +300,7 @@
             }
         }
 
-        window.onload = initializeApp;
+        window.onload = initializeApp; // Garante que o DOM está carregado antes de executar o script
     </script>
 </body>
 </html>
