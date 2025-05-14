@@ -3,40 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meus OKRs - Maratona Buenos Aires 2025</title>
+    <title>OKR Maratona</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
-        .container { padding: 20px; }
-        h1, h2, h3 { color: #333; }
-        .kr-item { margin-bottom: 15px; }
-        a { color: #1a73e8; text-decoration: none; }
-        .nav { margin-top: 20px; }
-        .nav a { display: block; margin-bottom: 10px; }
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+        }
+
+        header {
+            background: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        main {
+            padding: 0 2rem;
+        }
+
+        section {
+            margin: 2rem 0;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        ul li {
+            background: #f4f4f4;
+            margin: 0.5rem 0;
+            padding: 0.5rem;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Meus OKRs - Maratona Buenos Aires 2025</h1>
-        <h2>OKR GERAL</h2>
-        <p><strong>Objetivo:</strong> Correr a Maratona de Buenos Aires em 21 de Setembro de 2025 em minha melhor forma física e mental, buscando um tempo sub-3:30 e aproveitando a jornada de preparação.</p>
-        <div class="kr-item">
-            <h3>KR1: Completar o ciclo de treino de 19 semanas com pelo menos 90% de adesão...</h3>
-            <p>Progresso: <span>[0%]</span></p>
-        </div>
-        <div class="kr-item">
-            <h3>KR2: Executar com sucesso os 3 principais treinos longos...</h3>
-            <p>Progresso: <span>[0/3 Completos]</span></p>
-        </div>
-        <div class="kr-item">
-            <h3>KR3: Chegar à semana da prova sem lesões...</h3>
-            <p>Status: <span>[Pendente]</span></p>
-        </div>
-        <!-- Continue para KR4 e KR5 da mesma maneira -->
-        <div class="nav">
-            <a href="ciclo1.html">Acessar Ciclo 1: Fundação e Consistência (Semanas 1-8)</a>
-            <a href="ciclo2.html">Acessar Ciclo 2: Construção Específica (Semanas 9-15)</a>
-            <a href="ciclo3.html">Acessar Ciclo 3: Polimento e Preparação Final (Semanas 16-19)</a>
-        </div>
-    </div>
+    <header>
+        <h1>OKR - Maratona de Buenos Aires 2025</h1>
+    </header>
+
+    <main>
+        <section id="okr-geral">
+            <h2>Objetivo Geral</h2>
+            <p>Correr a Maratona de Buenos Aires em 21 de Setembro de 2025 em minha melhor forma física e mental.</p>
+            <ul>
+                <li>KR1: Completar o ciclo de treino de 19 semanas com pelo menos 90% de adesão.</li>
+                <li>KR2: Executar com sucesso os 3 principais treinos longos.</li>
+                <li>KR3: Chegar à semana da prova sem lesões incapacitantes.</li>
+                <li>KR4: Cruzar a linha de chegada da Maratona de Buenos Aires.</li>
+                <li>KR5: Alcançar um tempo oficial abaixo de 3 horas e 30 minutos.</li>
+            </ul>
+        </section>
+
+        <section id="ciclos-treino">
+            <h2>Ciclo 1: Fundação e Consistência</h2>
+            <p>Período: 12/05/2025 - 06/07/2025</p>
+            <!-- Repita esta seção para cada ciclo -->
+        </section>
+        
+        <section id="check-in-semanal">
+            <h2>Check-in Semanal</h2>
+            <div>
+                <label for="semana">Semana:</label>
+                <input type="text" id="semana" placeholder="Semana X">
+            </div>
+            <div>
+                <label for="confiança">Nível de Confiança:</label>
+                <input type="number" id="confiança" min="0" max="10">
+            </div>
+            <button onclick="registrarCheckIn()">Registrar Progresso</button>
+            <div id="resultado"></div>
+        </section>
+    </main>
+
+    <script>
+        function registrarCheckIn() {
+            const semana = document.getElementById("semana").value;
+            const confiança = document.getElementById("confiança").value;
+            const resultado = document.getElementById("resultado");
+
+            resultado.innerHTML = `<p>Semana ${semana} registrada com nível de confiança ${confiança}/10.</p>`;
+        }
+    </script>
 </body>
 </html>
